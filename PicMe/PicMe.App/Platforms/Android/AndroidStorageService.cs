@@ -40,12 +40,10 @@ namespace PicMe.Platforms.Android
 			foreach (var studentInfo in studentsInfo)
 			{
 				var base64picture = await _soapRepository.GetBase64ProfilePictureAsync(studentInfo.Identifier);
-				string date = DateTime.Now.ToShortDateString();
-				string dateWithoutSlahes = date.Replace("/", "");
-				string imageName = $"{studentInfo.Identifier.Trim()}.{dateWithoutSlahes}";
+
+				string imageName = $"{Guid.NewGuid()}";
 				await SaveImageToLocalFolder(base64picture, imageName, studentInfo);
-				studentInfo.ProfilePicture = $"{studentInfo.FamilyName.Trim()}.{studentInfo.GivenName.Trim()}";
-				await SaveImageToAppData(studentInfo.ProfilePicture, base64picture);
+				studentInfo.ProfilePicture = string.Empty;
 			}
 			var studentsInfoJson = JsonConvert.SerializeObject(studentsInfo, Formatting.Indented);
 			await _jsonService.SaveDataAsJsonAsync(studentsInfoJson, "students.json");
@@ -84,56 +82,39 @@ namespace PicMe.Platforms.Android
 
         public async Task<string> GetLatestPictureForStudentAsync(StudentInfo studentInfo)
         {
-            try
-            {
-                string relativePath = $"Pictures/PicMe/{studentInfo.Identifier.Trim()}";
+            string basePath = Path.Combine(Environment.GetExternalStoragePublicDirectory(Environment.DirectoryPictures).AbsolutePath, "PicMe");
 
-                // Define the projection (columns to retrieve)
-                string[] projection = {
-            MediaStore.Images.Media.InterfaceConsts.Id,
-            MediaStore.Images.Media.InterfaceConsts.DisplayName,
-            MediaStore.Images.Media.InterfaceConsts.DateAdded,
-            MediaStore.Images.Media.InterfaceConsts.Data
-        };
+			if (!Directory.Exists(basePath))
+			{
 
-    
-                string selection = $"{MediaStore.Images.Media.InterfaceConsts.RelativePath} = ?";
-                string[] selectionArgs = new[] { relativePath + "/" };
+                //create
+                Directory.CreateDirectory(basePath);
 
-
-                string sortOrder = $"{MediaStore.Images.Media.InterfaceConsts.DateAdded} DESC";
-
-                var cursor = Application.Context.ContentResolver.Query(
-                    MediaStore.Images.Media.ExternalContentUri,
-                    projection,
-                    selection,
-                    selectionArgs,
-                    sortOrder
-                );
-
-                if (cursor != null && cursor.MoveToFirst())
-                {
-                    // Get the column indices
-                    int dataColumn = cursor.GetColumnIndex(MediaStore.Images.Media.InterfaceConsts.Data);
-
-                    // Retrieve the file path
-                    string filePath = cursor.GetString(dataColumn);
-
-                    cursor.Close();
-
-                    return filePath;
-                }
-                else
-                {
-                    throw new FileNotFoundException("Geen foto voor deze leerling.");
-                }
             }
-            catch (Exception ex)
+
+            string studentFolderPath = Path.Combine(basePath, $"{studentInfo.Identifier.Trim()}");
+
+            if (!Directory.Exists(studentFolderPath))
             {
-                throw new Exception($"Er is een fout opgetreden bij het ophalen van de foto: {ex.Message}");
+                //create
+                Directory.CreateDirectory(studentFolderPath);
+
             }
+
+            var imageFiles = Directory.GetFiles(studentFolderPath);
+
+            if (imageFiles.Length == 0)
+            {
+				return string.Empty;
+            }
+
+            var latestFile = imageFiles
+                .Select(file => new FileInfo(file))
+                .OrderByDescending(fileInfo => fileInfo.LastWriteTime)
+                .FirstOrDefault();
+
+            return latestFile.FullName;
         }
-
 
         public async Task<bool> SaveImageToAppData(string pictureName, string base64ImageString)
 		{
@@ -169,35 +150,31 @@ namespace PicMe.Platforms.Android
 
 		public async Task<string> SaveImageToLocalFolder(string base64Image, string imageName, StudentInfo studentInfo)
 		{
-			try
-			{
-				byte[] imageBytes = Convert.FromBase64String(base64Image);
+            try
+            {
+                byte[] imageBytes = Convert.FromBase64String(base64Image);
 
-				ContentValues contentValues = new ContentValues();
-				contentValues.Put(MediaStore.Images.Media.InterfaceConsts.DisplayName, imageName);
-				contentValues.Put(MediaStore.Images.Media.InterfaceConsts.MimeType, "image/jpeg");
-				contentValues.Put(MediaStore.Images.Media.InterfaceConsts.RelativePath, $"Pictures/PicMe/{studentInfo.Identifier.Trim()}");
+                string basePath = Path.Combine(Environment.GetExternalStoragePublicDirectory(Environment.DirectoryPictures).AbsolutePath, "PicMe");
+                string studentFolderPath = Path.Combine(basePath, $"{studentInfo.Identifier.Trim()}");
 
-				var resolver = Application.Context.ContentResolver;
-				var imageUri = resolver.Insert(MediaStore.Images.Media.ExternalContentUri, contentValues);
+                if (!Directory.Exists(studentFolderPath))
+                {
+                    Directory.CreateDirectory(studentFolderPath);
+                }
 
-				if (imageUri != null)
-				{
-					using (var outputStream = resolver.OpenOutputStream(imageUri))
-					{
-						await outputStream.WriteAsync(imageBytes, 0, imageBytes.Length);
-					}
+                string filePath = Path.Combine(studentFolderPath, $"{imageName}.jpg");
 
-					return imageUri.ToString();
-				}
+                await File.WriteAllBytesAsync(filePath, imageBytes);
 
-				return null;
-			}
-			catch (Exception ex)
-			{
-				await Toast.ToastAlertAsync($"Er was een probleem met het opslaan van de foto van {studentInfo.FamilyName} {studentInfo.GivenName}: { ex.Message}");
-				return null;
-			}
+                return filePath;
+            }
+            catch (Exception ex)
+            {
+                // Display a toast message if there's an error
+                await Toast.ToastAlertAsync($"Er was een probleem met het opslaan van de foto van {studentInfo.FamilyName} {studentInfo.GivenName}: {ex.Message}");
+                return null;
+            }
+
 		}
 
 		public Task<string> LoadImageFromLocalFolder(string pictureName)

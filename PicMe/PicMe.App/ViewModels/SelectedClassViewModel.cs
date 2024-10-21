@@ -76,7 +76,7 @@ namespace PicMe.App.ViewModels
 #if WINDOWS
                         student.ImagePath = filepath + student.ProfilePicture;
 #elif ANDROID
-						//student.ImagePath = $"{filepath}/{student.ProfilePicture}";
+
                         student.ImagePath = await _storageService.GetLatestPictureForStudentAsync(student);
 #endif
                         studentInfoList.Add(student);
@@ -103,16 +103,17 @@ namespace PicMe.App.ViewModels
         {
             try
             {
-                studentInfo.IsTakingPicture = true;
+                var index = StudentsInfo.IndexOf(studentInfo);
+                StudentsInfo[index].IsTakingPicture = true;
+                //update the list
 
-                //update it in collection
-                StudentsInfo[StudentsInfo.IndexOf(studentInfo)] = studentInfo;
-
+                StudentsInfo = new ObservableCollection<StudentInfo>(StudentsInfo);
 
                 var photo = await MediaPicker.CapturePhotoAsync();
 
                 if (photo != null)
                 {
+                    studentInfo.ProfilePicture = string.Empty;
                     using (var stream = await photo.OpenReadAsync())
                     {
                         byte[] photoBytes;
@@ -123,43 +124,32 @@ namespace PicMe.App.ViewModels
                         }
 
                         string base64Image = Convert.ToBase64String(photoBytes);
-                        string date = DateTime.Now.ToShortDateString();
-                        string dateWithoutSlahes = date.Replace("/", "");
-
-                        if (string.IsNullOrWhiteSpace(studentInfo.ProfilePicture))
-                        {
-                            return;
-                        }
-
+               
 
                         string savedImageUri = await _storageService.SaveImageToLocalFolder(
                             base64Image,
-                            $"{studentInfo.Identifier.Trim()}{dateWithoutSlahes}",
+                            $"{Guid.NewGuid()}",
                             studentInfo);
 
                         if (!string.IsNullOrWhiteSpace(savedImageUri))
                         {
 
-
-                            var student = StudentsInfo.FirstOrDefault(s => s.Identifier == studentInfo.Identifier);
-
-
-                            if (student != null)
-                            {
-                                var index = StudentsInfo.IndexOf(student);
-                                student.IsUpdated = true;
-                                //student.ProfilePicture = savedImageUri;
-                                student.ImagePath = savedImageUri;
-                                student.ProfilePicture = base64Image;
-                                student.IsTakingPicture = false;
-
-                                StudentsInfo[index] = student;
-
-                                OnPropertyChanged(nameof(HasUpdatedStudents));
-                            }
-
+                            StudentsInfo[index].IsUpdated = true;
+                            StudentsInfo[index].ImagePath = savedImageUri;
+                            StudentsInfo[index].ProfilePicture = base64Image;
+         
                             await Application.Current.MainPage.DisplayAlert("Succes", $"Foto van {studentInfo.GivenName} " +
                                 $"{studentInfo.FamilyName} is succesvol genomen en opgeslagen.", "OK");
+                            
+                            StudentsInfo[index].IsTakingPicture = false;
+                            //update the list
+
+
+                            StudentsInfo = new ObservableCollection<StudentInfo>(StudentsInfo);
+
+                            OnPropertyChanged(nameof(HasUpdatedStudents));
+
+
                         }
                         else
                         {

@@ -40,6 +40,7 @@
                                    WidthRequest="80" 
                                    HeightRequest="80"
                                    Source="{Binding ImagePath}"
+                                    IsVisible="{Binding IsTakingPicture, Converter={StaticResource InverseBooleanConverter}}"
                                    VerticalOptions="Center" 
                                    HorizontalOptions="Center"/>
                             <StackLayout Grid.Column="1" Padding="20, 0"
