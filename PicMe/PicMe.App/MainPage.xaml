@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             x:Class="PicMe.App.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+           >
+            <skia:SKLottieView
+                    Source="home.json"
+                    RepeatCount="-1"
+                    BackgroundColor="Transparent"
+                    HeightRequest="200"
+                    WidthRequest="200"
+                    HorizontalOptions="Center"
+                    Margin="{OnPlatform Android='0,80,0,0', WinUI='0,80,0,0'}"
+                    IsVisible="{OnPlatform Android=True, iOS=False, WinUI=False}" />
+            <Image
+                Source="picmeimage.png"
+                IsVisible="{OnPlatform Android= False, WinUI= True, iOS= False}"
+                HeightRequest="185"
+                Aspect="AspectFit"/>
+
+            <Label
+                Text="{Binding Name}"
+                Style="{StaticResource Headline}"
+                Margin="{OnPlatform Android='0,80,0,0', WinUI='0,100,0,0'}"
+                SemanticProperties.HeadingLevel="Level1" />
+
+            <Label
+                Style="{StaticResource SubHeadline}"
+                SemanticProperties.HeadingLevel="Level2" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

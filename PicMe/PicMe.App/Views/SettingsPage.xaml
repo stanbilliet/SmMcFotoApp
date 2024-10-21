@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PicMe.App.SettingsPage"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             Title="Instellingen">
+
+    <Grid Padding="22" RowSpacing="17">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Text="School" VerticalOptions="Center" Grid.Row="0" Grid.Column="0"/>
+        <Entry x:Name="schoolEntry" Completed="OnEntryCompleted" Text="{Binding SchoolEntry}" Placeholder="Naam van de school zonder spaties" Grid.Row="0" Grid.Column="1" HorizontalOptions="FillAndExpand" />
+
+        <Label Text="Client ID" VerticalOptions="Center" Grid.Row="1" Grid.Column="0"/>
+        <Entry x:Name="clientIdEntry" Completed="OnEntryCompleted" Text="{Binding ClientIdEntry}" Placeholder="Client ID" Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand"/>
+
+        <Label Text="Client Secret" VerticalOptions="Center" Grid.Row="2" Grid.Column="0"/>
+        <Entry x:Name="clientSecretEntry" Completed="OnEntryCompleted" Text="{Binding ClientSecretEntry}" Placeholder="Client Secret" Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand"/>
+
+        <Label Text="API Key" VerticalOptions="Center" Grid.Row="3" Grid.Column="0"/>
+        <Entry x:Name="apiKeyEntry" Completed="OnEntryCompleted" Text="{Binding ApiKeyEntry}" Placeholder="SOAP API Key" Grid.Row="3" Grid.Column="1" HorizontalOptions="FillAndExpand"/>
+
+        <Label Text="Afzender" VerticalOptions="Center" Grid.Row="4" Grid.Column="0"/>
+        <Entry x:Name="senderEntry" Completed="OnEntryCompleted" Text="{Binding SenderEntry}" Placeholder="Afzender voor notificaties" Grid.Row="4" Grid.Column="1" HorizontalOptions="FillAndExpand"/>
+
+        <Label Text="Ophalen via" VerticalOptions="Center" Grid.Row="5" Grid.Column="0"/>
+        <Picker 
+            x:Name="selectedIdentifier"
+            ItemsSource="{Binding Identifications}"
+                SelectedIndex="{Binding SelectedIdentifier}"
+                Grid.Row="5"
+                Grid.Column="1"
+                IsEnabled="{Binding IsPickerEnabled}"
+                VerticalOptions="Center"/>
+
+        <Label Text="Backup" VerticalOptions="Center" Grid.Row="6" Grid.Column="0"/>
+        <Entry Text="{Binding BackupEntry}"
+               x:Name="backupEntry"
+               Placeholder="{Binding BackupPlaceholder}"
+               Grid.Row="6"
+               Grid.Column="1"
+               HorizontalOptions="FillAndExpand" Completed="OnEntryCompleted" />
+
+        <Button 
+                Text="Opslaan"
+                ImageSource="{mi:Material Icon=Save}"
+                Command="{Binding SaveSettingsCommand}"
+                Grid.Row="7"
+                Grid.ColumnSpan="2"
+                BackgroundColor="LimeGreen"
+                TextColor="White"
+                HorizontalOptions="Center"
+                WidthRequest="130"/>
+
+        <Button 
+                Text="Pin Veranderen"
+                ImageSource="{mi:Material Icon=Password}"
+                Command="{Binding ChangePinCommand}"
+                Grid.Row="8"
+                Grid.ColumnSpan="2"
+                BackgroundColor="LimeGreen"
+                TextColor="White"
+                HorizontalOptions="Center"
+                WidthRequest="180"/>
+
+        <Label x:Name="successMessage" Text="Instellingen succesvol opgeslagen!" 
+               TextColor="Green" IsVisible="False" Grid.Row="9" Grid.ColumnSpan="2" HorizontalOptions="Center"/>
+    </Grid>
+</ContentPage>

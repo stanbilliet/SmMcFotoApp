@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PicMe.App.Views.PinCodeModalPage"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             xmlns:pinview="clr-namespace:PINView.Maui;assembly=PINView.Maui"
+             Title="PinCodeModalPage">
+    <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
+
+        <skia:SKLottieView
+                Source="pincode.json"
+                RepeatCount="-1"
+                BackgroundColor="Transparent"
+                HeightRequest="150"
+                WidthRequest="150"
+                HorizontalOptions="Center"
+                IsVisible="{OnPlatform Android=True, WinUI= False, iOS= False}"/>
+
+        <Image x:Name="fallbackImage" 
+                       Source="pincode_uwp.png" 
+                       IsVisible="{OnPlatform WinUI= True, Android= False, iOS= False}" 
+                       HeightRequest="200" 
+                       WidthRequest="200"
+                       Margin="{OnPlatform WinUI='0,-200,0,0'}"/>
+
+        <Label Text="{Binding ModalLabel}" 
+               HorizontalOptions="Center" 
+               FontSize="Medium"/>
+
+        <pinview:PINView
+                BoxBackgroundColor="LightGreen"
+                BoxShape="Circle"
+                PINLength="4"
+                IsPassword="True"
+                AutoDismissKeyboard="True"
+                BoxSpacing="15"
+                PINInputType="Numeric"
+                PINValue="{Binding PinCode}"
+                BoxFocusAnimation="ScaleUp"
+                Color="#442C2E"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"/>
+
+        <pinview:PINView
+                BoxBackgroundColor="LightGreen"
+                BoxShape="Circle"
+                PINLength="4"
+                BoxSpacing="15"
+                PINInputType="Numeric"
+                IsPassword="True"
+                AutoDismissKeyboard="True"
+                BoxFocusAnimation="ScaleUp"            
+                PINValue="{Binding ConfirmPin}"
+                IsVisible="{Binding IsConfirmationVisiable}"
+                Color="#442C2E"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"/>
+
+        <Button Text="Bevestigen" Command="{Binding ConfirmPinCodeCommand}" />
+
+        <Entry
+            Text="{Binding NameCheck}" IsVisible="{Binding IsEntryVisible}" Placeholder="Geef het backup account naam in"
+        />
+        <Button Text="Verstuur" Command="{Binding CheckValueCommand}" IsVisible="{Binding IsEntryButtonVisible}"></Button>
+        
+        
+        <Button Text="Pin Resetten" Command="{Binding SetNewPinCommand}" IsVisible="{Binding IsResetPinVisible}" />
+
+    </VerticalStackLayout>
+</ContentPage>

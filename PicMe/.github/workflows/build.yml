@@ -1,0 +1,35 @@
+name: .NET Build Check
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.x'
+
+    - name: Install MAUI workloads
+      run: dotnet workload restore
+
+    - name: Restore dependencies
+      run: dotnet restore ./PicMe.sln
+
+    - name: Build solution
+      run: dotnet build ./PicMe.sln --configuration Release --no-restore
+
+    - name: Report build errors
+      if: failure()
+      run: echo "Build failed! Please check the logs for details."

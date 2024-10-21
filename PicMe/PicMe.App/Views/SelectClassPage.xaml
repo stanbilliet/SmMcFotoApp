@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resx="clr-namespace:PicMe.App.Resources.Strings"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             x:Class="PicMe.App.SelectClassPage"
+             Title="{x:Static resx:AppResources.SelectClassTitle}">
+
+    <VerticalStackLayout>
+        <Button 
+                ImageSource="{mi:Material Icon=Info}"
+                Command="{Binding ShowInfoCommand}"
+                BackgroundColor="Transparent"
+                WidthRequest="30"
+                HeightRequest="30"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="1, 0, AutoSize, AutoSize"
+                Margin="10" />
+
+        <Grid Padding="22" 
+                  RowSpacing="20" 
+                  ColumnSpacing="10"
+                  AbsoluteLayout.LayoutFlags="All"
+                  AbsoluteLayout.LayoutBounds="0.5, 0.5, -1, -1"
+                  HorizontalOptions="Center"
+                  VerticalOptions="Center">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Text="Zoek een klas"
+                       FontSize="Small"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Margin="0,0,10,0"/>
+
+            <SearchBar Placeholder="{x:Static resx:AppResources.SearchClassPlaceholder}"
+                           Text="{Binding SearchClass}"
+                           VerticalOptions="Center"
+                           Grid.Row="0"
+                           Grid.Column="1"
+                           WidthRequest="200" />
+
+            <CollectionView ItemsSource="{Binding FilteredClasses}"
+                                SelectionMode="Single"
+                                SelectedItem="{Binding SelectedClass}"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                HeightRequest="200">
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding ClassCode}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button 
+                        Text="{x:Static resx:AppResources.NextButtonText}" 
+                        Command="{Binding NavigateToSelectedClassPageCommand}"
+                        ImageSource="{mi:Material Icon=NavigateNext}"
+                        BackgroundColor="#007AFF"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        CornerRadius="5"
+                        HeightRequest="40"
+                        WidthRequest="150"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Grid.Row="3"
+                        Grid.ColumnSpan="2"
+                        Margin="0,20,0,0"/>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             x:Class="PicMe.App.SyncPage"
+             Title="Synchroniseren">
+    <ScrollView>
+        <VerticalStackLayout HorizontalOptions="Center">
+            <Grid>
+                <skia:SKLottieView
+                    Source="sync.json"
+                    RepeatCount="-1"
+                    BackgroundColor="Transparent"
+                    HeightRequest="200"
+                    WidthRequest="200"
+                    HorizontalOptions="Center"
+                    IsVisible="{OnPlatform Android=True, iOS=False, WinUI=False}"
+                />
+
+                <Image x:Name="fallbackImage" 
+                       Source="fallback_image.png" 
+                       IsVisible="{OnPlatform WinUI=True, Android=False, iOS=False}" 
+                       HeightRequest="200" 
+                       WidthRequest="200"
+                       HorizontalOptions="Center"/>
+            </Grid>
+
+            <Button
+                ImageSource="{mi:Material Icon=CloudSync}"
+                x:Name="SyncButton"
+                Text="Sync"
+                BackgroundColor="Black"
+                TextColor="LightBlue"
+                HorizontalOptions="Center"
+                Padding="5"
+                Command="{Binding SyncDataCommand}"
+                MinimumWidthRequest="50"
+                HeightRequest="40"
+                Margin="0,10,0,0"
+                />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

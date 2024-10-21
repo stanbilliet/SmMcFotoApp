@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="PicMe.App.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:PicMe.App"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:resx="clr-namespace:PicMe.App.Resources.Strings"
+    FlyoutBehavior="Flyout"
+    FlyoutIcon="{mi:Material Icon=Menu, IconColor=#3F94D5}">
+
+    <FlyoutItem Title="{x:Static resx:AppResources.HomeTitle}" Icon="{mi:Material Icon=HomeFilled, IconColor=#3F94D5}" >
+        <ShellContent
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="{x:Static resx:AppResources.SelectClassTitle}" Icon="{mi:Material Icon=ManageAccounts, IconColor=#BB2E8E}" >
+        <ShellContent
+        ContentTemplate="{DataTemplate local:SelectClassPage}"
+        Route="SelectClassPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="{x:Static resx:AppResources.ClassListTitle}" Icon="{mi:Material Icon=PhotoLibrary, IconColor=#F8922E}">
+        <ShellContent
+        ContentTemplate="{DataTemplate local:ClassListPage}"
+        Route="ClassListPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="{x:Static resx:AppResources.SyncTitle}" Icon="{mi:Material Icon=CloudSync, IconColor=#B2D438}">
+        <ShellContent
+        ContentTemplate="{DataTemplate local:SyncPage}"
+        Route="SyncPage" />
+    </FlyoutItem>
+    
+    <MenuItem 
+        Text="{x:Static resx:AppResources.SettingsText}"
+        Command="{Binding NavigateToSettingsCommand}"
+        IconImageSource="{mi:Material Icon=Settings, IconColor=#B2D438}" />
+
+    <Shell.FlyoutFooter>
+        <Grid Padding="10" ColumnSpacing="19" HorizontalOptions="Center" VerticalOptions="End">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Button Text="Nl" Grid.Column="0" Command="{Binding SetAppLanguageCommand}" CommandParameter="nl" />
+
+            <Button Text="En" Grid.Column="1" Command="{Binding SetAppLanguageCommand}" CommandParameter="en" />
+
+            <Button Text="Fr" Grid.Column="2" Command="{Binding SetAppLanguageCommand}" CommandParameter="fr" />
+            
+            <Button Text="De" Grid.Column="3" Command="{Binding SetAppLanguageCommand}" CommandParameter="De" />
+        </Grid>
+    </Shell.FlyoutFooter>
+
+</Shell>
