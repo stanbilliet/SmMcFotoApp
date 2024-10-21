@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,7 @@ namespace PicMe.Core.Entities
 		public bool IsUpdated { get; set; }
 		[JsonProperty("imagePath")]
 		public string ImagePath { get; set; }
+		public bool IsTakingPicture { get; set; } = false;
 
 
 	}

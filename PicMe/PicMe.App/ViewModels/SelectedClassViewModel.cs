@@ -30,6 +30,10 @@ namespace PicMe.App.ViewModels
         [ObservableProperty]
         private ObservableCollection<StudentInfo> studentsInfo;
 
+        [ObservableProperty]
+        private bool isBussy;
+
+
         private bool hasUpdatedStudents;
         public bool HasUpdatedStudents
         {
@@ -53,11 +57,13 @@ namespace PicMe.App.ViewModels
 
         partial void OnClassCodeChanged(string value)
         {
-            LoadStudentsAsync(value).ConfigureAwait(false);
+            LoadStudentsAsync(value);
         }
 
         private async Task LoadStudentsAsync(string classCode)
         {
+            IsBussy = true;
+
             try
             {
                 var students = await _studentService.GetStudentsByClassCodeAsync(classCode);
@@ -87,6 +93,8 @@ namespace PicMe.App.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("Error", $"Er is een fout opgetreden: {ex.Message}", "OK");
             }
+
+            IsBussy = false;
         }
 
 
@@ -95,6 +103,12 @@ namespace PicMe.App.ViewModels
         {
             try
             {
+                studentInfo.IsTakingPicture = true;
+
+                //update it in collection
+                StudentsInfo[StudentsInfo.IndexOf(studentInfo)] = studentInfo;
+
+
                 var photo = await MediaPicker.CapturePhotoAsync();
 
                 if (photo != null)
@@ -111,15 +125,12 @@ namespace PicMe.App.ViewModels
                         string base64Image = Convert.ToBase64String(photoBytes);
                         string date = DateTime.Now.ToShortDateString();
                         string dateWithoutSlahes = date.Replace("/", "");
+
                         if (string.IsNullOrWhiteSpace(studentInfo.ProfilePicture))
                         {
                             return;
                         }
 
-                        //bool isSavedToAppData = await _storageService.SaveImageToAppData(
-                        //    studentInfo.ProfilePicture,
-                        //    base64Image
-                        //);
 
                         string savedImageUri = await _storageService.SaveImageToLocalFolder(
                             base64Image,
@@ -140,6 +151,7 @@ namespace PicMe.App.ViewModels
                                 //student.ProfilePicture = savedImageUri;
                                 student.ImagePath = savedImageUri;
                                 student.ProfilePicture = base64Image;
+                                student.IsTakingPicture = false;
 
                                 StudentsInfo[index] = student;
 
@@ -170,6 +182,9 @@ namespace PicMe.App.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("Error", $"Er is een fout opgetreden: {ex.Message}", "OK");
             }
+
+         
+
         }
 
         [RelayCommand]
@@ -179,7 +194,7 @@ namespace PicMe.App.ViewModels
             {
                 if (studentInfo.IsUpdated)
                 {
-
+                    IsBussy = true;
 
                     string base64Image = studentInfo.ProfilePicture;
 
@@ -197,6 +212,8 @@ namespace PicMe.App.ViewModels
                             $"Er is een fout opgetreden bij het updaten van de foto van " +
                             $"{studentInfo.GivenName} {studentInfo.FamilyName}.", "OK");
                     }
+
+                    IsBussy = false;
                 }
                 else
                 {

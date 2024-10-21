@@ -86,6 +86,7 @@
                                                 HeightRequest="40"
                                                 WidthRequest="40"
                                                 BackgroundColor="#FF9800"
+                                                Margin="0, 20, 0, 0"
                                                 BorderColor="#F57C00"
                                                 BorderWidth="2" />
                                 </StackLayout>

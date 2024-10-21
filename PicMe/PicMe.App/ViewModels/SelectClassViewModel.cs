@@ -28,13 +28,14 @@ namespace PicMe.App.ViewModels
         [ObservableProperty]
         private SchoolClass selectedClass;
 
+
         [ObservableProperty]
         private ObservableCollection<SchoolClass> filteredClasses;
 
         public SelectClassViewModel(IStudentService studentService)
         {
             _studentService = studentService;
-            InitializeAsync();
+            InitializeAsync().ConfigureAwait(false);
         }
 
         private async Task InitializeAsync()

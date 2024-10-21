@@ -2,18 +2,40 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:local="clr-namespace:PicMe.App.Converters" 
              x:Class="PicMe.App.SelectedClassPage"
              x:Name="PageName"
             Title="{Binding ClassCode}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <StackLayout VerticalOptions="FillAndExpand">
+
+        <ActivityIndicator 
+            IsRunning="{Binding IsBussy}"
+            IsEnabled="{Binding IsBussy}"
+            IsVisible="{Binding IsBussy}"
+            VerticalOptions="CenterAndExpand" 
+            HorizontalOptions="CenterAndExpand" />
+
         <CollectionView ItemsSource="{Binding StudentsInfo}"
                         VerticalOptions="FillAndExpand"
-                        HorizontalOptions="FillAndExpand">
+                        HorizontalOptions="FillAndExpand"
+                        IsVisible="{Binding IsBussy, Converter={StaticResource InverseBooleanConverter}}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Padding="30" Margin="10" HasShadow="True" CornerRadius="8">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding IsUpdated}" Value="True">
+                                <Setter Property="BackgroundColor" Value="Orange" />
+                            </DataTrigger>
+                        </Frame.Triggers>
                         <Grid RowDefinitions="Auto, Auto"
-                              ColumnDefinitions="80, *">
+                              ColumnDefinitions="80, *" RowSpacing="14">
                             <Image Grid.RowSpan="2"
                                    WidthRequest="80" 
                                    HeightRequest="80"
@@ -21,6 +43,7 @@
                                    VerticalOptions="Center" 
                                    HorizontalOptions="Center"/>
                             <StackLayout Grid.Column="1" Padding="20, 0"
+                                         Orientation="Horizontal"
                                          HorizontalOptions="Start" 
                                          VerticalOptions="Center" 
                                          Spacing="5">
@@ -28,12 +51,13 @@
                                        FontAttributes="Bold"
                                        TextColor="Black"
                                        FontSize="Medium" 
-                                       Margin="0, 10, 0, 0"/>
+                                       Margin="0, 0, 0, 0"/>
                                 <Label Text="{Binding FamilyName}"
                                        TextColor="Black"
                                        FontSize="Medium" 
-                                       Margin="0, 5, 0, 0"/>
+                                       Margin="0, 0, 0, 0"/>
                             </StackLayout>
+                            
                             <StackLayout Grid.Column="1" Grid.Row="2" Orientation="Horizontal" 
                                                 HorizontalOptions="EndAndExpand" Spacing="10">
                                 <Button 
@@ -44,7 +68,14 @@
                                         VerticalOptions="EndAndExpand"
                                         HorizontalOptions="EndAndExpand"
                                         BackgroundColor="LightBlue"
+                                        IsVisible="{Binding IsTakingPicture, Converter={StaticResource InverseBooleanConverter}}"
                                         CornerRadius="8"/>
+
+                                <ActivityIndicator 
+    IsRunning="{Binding IsTakingPicture}"
+    IsVisible="{Binding IsTakingPicture}"
+        WidthRequest="40"
+        HeightRequest="40" />
                                 <Button 
                                         ImageSource="{mi:Material Icon=CloudSync}"
                                         Text="Send" 
@@ -54,6 +85,7 @@
                                         VerticalOptions="EndAndExpand"
                                         HorizontalOptions="EndAndExpand"
                                         BackgroundColor="LightBlue"
+                                      
                                         CornerRadius="8"/>
                             </StackLayout>
                         </Grid>
@@ -62,12 +94,17 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-
         <Button Text="Verzend alle geupdated foto's" 
-                Command="{Binding SetStudentsAccountPictureCommand}" 
-                IsEnabled="{Binding HasUpdatedStudents}" 
-                HorizontalOptions="Center" 
-                VerticalOptions="End" />
+        Command="{Binding SetStudentsAccountPictureCommand}" 
+        IsEnabled="{Binding HasUpdatedStudents}" 
+        HorizontalOptions="Center" 
+        VerticalOptions="End"
+        BackgroundColor="Orange"         
+        TextColor="White"                
+        FontSize="Medium"                 
+        Padding="10, 10"                 
+        WidthRequest="350"               
+        CornerRadius="10" />
 
         <Button 
                 ImageSource="{mi:Material Icon=ArrowBack}"
@@ -76,6 +113,7 @@
                 HorizontalOptions="Center"
                 VerticalOptions="End"
                 BackgroundColor="LightGray"
+                Margin="0, 20, 0, 0"
                 TextColor="Black" />
     </StackLayout>
 </ContentPage>
