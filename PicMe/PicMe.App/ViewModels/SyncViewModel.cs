@@ -12,6 +12,7 @@ using System.Text.Json;
 using Newtonsoft.Json;
 using PicMe.Core.Entities;
 using PicMe.App.Views;
+using CommunityToolkit.Maui.Views;
 
 namespace PicMe.App.ViewModels
 {
@@ -101,7 +102,8 @@ namespace PicMe.App.ViewModels
         private async Task ClearData()
         {
             var popup = new DeleteConfirmPopup();
-     
+            var currentPage = Application.Current.MainPage;
+            var result = await currentPage.ShowPopupAsync(popup);
         }
 
         public override void OnLanguageChanged()

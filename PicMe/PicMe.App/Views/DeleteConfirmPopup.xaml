@@ -13,7 +13,7 @@
 
         <HorizontalStackLayout HorizontalOptions="Center">
             <Button Text="Cancel" Clicked="OnCancelButtonClicked"/>
-            <Button Text="Delete" BackgroundColor="Red" TextColor="White" Clicked="OnDeleteButtonClicked"/>
+            <Button Text="Delete" BackgroundColor="Red" TextColor="White" Clicked="OnDeleteButtonClicked" Margin="2,0,0,0"/>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 
