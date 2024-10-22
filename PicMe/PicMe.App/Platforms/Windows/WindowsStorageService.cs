@@ -139,5 +139,15 @@ namespace PicMe.App.Platforms.Windows
 
             return Task.FromResult(true);
         }
+
+        public Task<string> SaveImageToLocalFolder(string base64Image, string imageName, StudentInfo studentInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetLatestPictureForStudentAsync(StudentInfo studentInfo)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
