@@ -89,11 +89,13 @@ namespace PicMe.Test.Tests
             // Act
             var result = await _studentService.GetAllStudentsAsync();
 
+            var students = JsonConvert.DeserializeObject<List<StudentInfo>>(studentsJson);
+
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(2, result.Enrollments.Count);
-            Assert.Contains(result.Enrollments, e => e.Students.GivenName == "John" && e.Students.FamilyName == "Doe");
-            Assert.Contains(result.Enrollments, e => e.Students.GivenName == "Jane" && e.Students.FamilyName == "Smith");
+            Assert.NotNull(students);
+            Assert.Equal(2, students.Count);
+            Assert.Contains(students, e => e.GivenName == "John" && e.FamilyName == "Doe");
+            Assert.Contains(students, e => e.GivenName == "Jane" && e.FamilyName == "Smith");
         }
         [Fact]
         public async Task GetAllStudentsAsync_EmptyData_ReturnsEmptyRoot()
@@ -106,7 +108,7 @@ namespace PicMe.Test.Tests
 
             // Assert
             Assert.NotNull(result);
-            Assert.Empty(result.Enrollments);
+            Assert.Empty(result);
         }
         [Fact]
         public async Task GetAllStudentsAsync_ExceptionThrown_ReturnsNull()
@@ -135,14 +137,16 @@ namespace PicMe.Test.Tests
             // Act
             var result = await _studentService.GetStudentsByClassCodeAsync("ClassA");
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Single(result.Enrollments);
+            var studentresult = JsonConvert.DeserializeObject<List<StudentInfo>>(studentsJson);
 
-            var enrollment = result.Enrollments.ElementAt(0);
-            Assert.Equal("John", enrollment.Students.GivenName);
-            Assert.Equal("Doe", enrollment.Students.FamilyName);
-            Assert.Equal("ClassA", enrollment.SchoolClasses.ClassCode);
+            // Assert
+            Assert.NotNull(studentresult);
+            Assert.Single(studentresult);
+
+            var enrollment = studentresult.ElementAt(0);
+            Assert.Equal("John", enrollment.GivenName);
+            Assert.Equal("Doe", enrollment.FamilyName);
+            Assert.Equal("ClassA", enrollment.ClassCode);
         }
 
         [Fact]
@@ -161,7 +165,7 @@ namespace PicMe.Test.Tests
 
             // Assert
             Assert.NotNull(result);
-            Assert.Empty(result.Enrollments);
+            Assert.Empty(result);
         }
         [Fact]
         public async Task GetStudentsByClassCodeAsync_ExceptionThrown_ReturnsNull()
