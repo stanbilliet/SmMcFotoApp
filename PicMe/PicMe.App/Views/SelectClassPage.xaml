@@ -4,6 +4,7 @@
              xmlns:resx="clr-namespace:PicMe.App.Resources.Strings"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              x:Class="PicMe.App.SelectClassPage"
+             Shell.BackgroundColor="LightBlue"
              Title="{x:Static resx:AppResources.SelectClassTitle}">
 
     <VerticalStackLayout>
@@ -33,7 +34,7 @@
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -43,25 +44,27 @@
                        VerticalOptions="Center"
                        Grid.Row="0"
                        Grid.Column="0"
-                       Margin="0,0,10,0"/>
+                       Margin="0,0,10,0"
+        
+                   />
 
             <SearchBar Placeholder="{x:Static resx:AppResources.SearchClassPlaceholder}"
                            Text="{Binding SearchClass}"
                            VerticalOptions="Center"
                            Grid.Row="0"
                            Grid.Column="1"
-                           WidthRequest="200" />
+                           WidthRequest="300" />
 
             <CollectionView ItemsSource="{Binding FilteredClasses}"
                                 SelectionMode="Single"
                                 SelectedItem="{Binding SelectedClass}"
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
-                                HeightRequest="200">
+                                HeightRequest="400">
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Label Text="{Binding ClassCode}" />
+                        <Label Text="{Binding ClassCode}" FontSize="Medium" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

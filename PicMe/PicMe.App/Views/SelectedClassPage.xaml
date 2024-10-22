@@ -5,6 +5,7 @@
              xmlns:local="clr-namespace:PicMe.App.Converters" 
              x:Class="PicMe.App.SelectedClassPage"
              x:Name="PageName"
+                 Shell.BackgroundColor="LightBlue"
             Title="{Binding ClassCode}">
 
     <ContentPage.Resources>
