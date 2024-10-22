@@ -11,8 +11,9 @@ namespace PicMe.Core.Interfaces.Services
     {
         Task<string> SaveImageToLocalFolder(string base64Image, string imageName, StudentInfo studentInfo);
         Task<string> LoadImageFromLocalFolder(string imageName);
-        Task<bool> CreateFoldersForStudentsAsync(List<StudentInfo> studentsInfo);
-        Task<bool> SaveSmartschoolProfilePictureToStudentFolderAsync();
+        Task<bool> CreateFoldersForStudentsAsync(StudentInfo studentInfo);
+        Task<bool> CreateStudentJsonFile(List<StudentInfo> studentInfos);
+        Task<bool> SaveSmartschoolProfilePictureToStudentFolderAsync(StudentInfo studentInfo);
         Task<bool> SaveImageToAppData(string pictureName, string base64ImageString);
         Task<string> GetLatestPictureForStudentAsync(StudentInfo studentInfo);
     }

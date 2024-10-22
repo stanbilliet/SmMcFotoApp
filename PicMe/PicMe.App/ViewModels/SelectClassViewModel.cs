@@ -68,6 +68,7 @@ namespace PicMe.App.ViewModels
                 {
                     Classes = uniqueClasses
                         .Select(classCode => new SchoolClass { ClassCode = classCode })
+                        .OrderBy(x => x.ClassCode)
                         .Distinct()
                         .ToList();
                 }

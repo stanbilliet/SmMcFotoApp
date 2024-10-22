@@ -15,7 +15,6 @@ namespace PicMe.App
             InitializeComponent();
             BindingContext = appShellViewModel;
 
-            Routing.RegisterRoute(nameof(ClassListPage), typeof(ClassListPage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
             Routing.RegisterRoute(nameof(SelectClassPage), typeof(SelectClassPage));
             Routing.RegisterRoute(nameof(SelectedClassPage), typeof(SelectedClassPage));

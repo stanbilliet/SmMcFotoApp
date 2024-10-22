@@ -10,17 +10,26 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Text.Json;
 using Newtonsoft.Json;
+using PicMe.Core.Entities;
+using PicMe.App.Views;
 
 namespace PicMe.App.ViewModels
 {
-    public partial class SyncViewModel(IOneRosterRepository oneRosterRepository, IJsonService jsonService) : BaseViewModel
+    public partial class SyncViewModel(IOneRosterRepository oneRosterRepository, IJsonService jsonService, IStorageService storageService) : BaseViewModel
     {
 
         private readonly IOneRosterRepository _oneRosterRepository = oneRosterRepository;
         private readonly IJsonService _jsonService = jsonService;
+        private readonly IStorageService _storageService = storageService;
+
+        [ObservableProperty]
+        private double _progressValue;
 
         [ObservableProperty]
         private bool _isBusy;
+
+        [ObservableProperty]
+        private bool _syncPicturesFromSmSc;
 
         [RelayCommand]
         private async Task SyncData()
@@ -38,9 +47,35 @@ namespace PicMe.App.ViewModels
 
                 var enrollments = await _oneRosterRepository.GetAllEnrollmentsAsync();
 
+                var localProgress = 1.0 / enrollments.Count;
+
+                var result = await _storageService.CreateStudentJsonFile(enrollments);
+
+                foreach (var enrollment in enrollments)
+                {
+
+                    await _storageService.CreateFoldersForStudentsAsync(enrollment);
+                    if (SyncPicturesFromSmSc)
+                    {
+                        await _storageService.SaveSmartschoolProfilePictureToStudentFolderAsync(enrollment);
+                    }
+
+                    enrollment.ProfilePicture = string.Empty;
+
+                    ProgressValue += localProgress;
+
+
+                }
+
+                result = await _storageService.CreateStudentJsonFile(enrollments);
+
+                ProgressValue = 0;
+
+
+
                 //var enrollmentsJson = System.Text.Json.JsonSerializer.Serialize(enrollments);
 
-                if (enrollments)
+                if (result)
                 {
                     await Application.Current.MainPage.DisplayAlert("Succes", "Data is gesynchroniseerd en opgeslagen!", "Ok");
                 }
@@ -48,6 +83,8 @@ namespace PicMe.App.ViewModels
                 {
                     await Application.Current.MainPage.DisplayAlert("Fout", "Data kon niet opgeslagen worden.", "Ok");
                 }
+
+
 
             }
             catch (Exception ex)
@@ -58,6 +95,13 @@ namespace PicMe.App.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        [RelayCommand]
+        private async Task ClearData()
+        {
+            var popup = new DeleteConfirmPopup();
+     
         }
 
         public override void OnLanguageChanged()

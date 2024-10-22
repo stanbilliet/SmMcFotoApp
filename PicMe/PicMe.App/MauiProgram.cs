@@ -55,13 +55,13 @@ namespace PicMe.App
 			builder.Services.AddTransient<SettingsViewModel>();
 			builder.Services.AddTransient<SyncViewModel>();
 			builder.Services.AddTransient<SelectClassViewModel>();
-            builder.Services.AddTransient<ClassListViewModel>();
+
 			builder.Services.AddTransient<SelectedClassViewModel>();
 			builder.Services.AddTransient<AppShellViewModel>();
 
 			// Register pages
 			builder.Services.AddTransient<SettingsPage>();
-			builder.Services.AddTransient<ClassListPage>();
+
 			builder.Services.AddTransient<SelectClassPage>();
 			builder.Services.AddTransient<SyncPage>();
 			builder.Services.AddTransient<SelectedClassPage>();

@@ -11,7 +11,7 @@ namespace PicMe.Core.Interfaces.Repositories
 	public interface IOneRosterRepository
 	{
 		Task<string> GetAccessTokenAsync();
-		Task<bool> GetAllEnrollmentsAsync();
+		Task<List<StudentInfo>> GetAllEnrollmentsAsync();
 		
 	}
 }

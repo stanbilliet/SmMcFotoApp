@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="PicMe.App.Views.DeleteConfirmPopup">
+
+    <VerticalStackLayout Padding="20" Spacing="10" BackgroundColor="White"
+                         VerticalOptions="Center" HorizontalOptions="Center"
+                         WidthRequest="300" HeightRequest="150">
+
+        <Label Text="Weet je zeker dat je wil verder gaan?" 
+               FontSize="Medium" HorizontalOptions="Center"/>
+
+        <HorizontalStackLayout HorizontalOptions="Center">
+            <Button Text="Cancel" Clicked="OnCancelButtonClicked"/>
+            <Button Text="Delete" BackgroundColor="Red" TextColor="White" Clicked="OnDeleteButtonClicked"/>
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+
+</toolkit:Popup>

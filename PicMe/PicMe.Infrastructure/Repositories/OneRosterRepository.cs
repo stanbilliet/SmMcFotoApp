@@ -64,7 +64,7 @@ namespace PicMe.Infrastructure.Repositories
 			}
 		}
 
-		public async Task<bool> GetAllEnrollmentsAsync()
+		public async Task<List<StudentInfo>> GetAllEnrollmentsAsync()
 		{
 			var school = await _secureStorageService.GetAsync("SchoolName");
 			var token = await GetAccessTokenAsync();
@@ -72,7 +72,7 @@ namespace PicMe.Infrastructure.Repositories
 			if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(school))
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", $"Token is leeg, Contacteer uw IT dienst om deze bij te werken", "OK");
-				return false;
+				return null;
 			}
 
 			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -81,15 +81,15 @@ namespace PicMe.Infrastructure.Repositories
 			if (!response.IsSuccessStatusCode)
 			{
 				await Application.Current.MainPage.DisplayAlert("Error", $"Verkeerde credentials, Contacteer uw IT dienst om deze bij te werken", "OK");
-				return false;
+				return null;
 			}
 
 			var studentsJson = await response.Content.ReadAsStringAsync();
 			var studentsInfo = await _jsonService.ExtractStudentInfoAsync(studentsJson);
-			await _storageService.CreateFoldersForStudentsAsync(studentsInfo);
+		
 
 
-			return true;
+			return studentsInfo;
 		}
 	}
 }

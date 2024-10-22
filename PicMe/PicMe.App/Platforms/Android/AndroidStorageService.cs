@@ -32,31 +32,24 @@ namespace PicMe.Platforms.Android
 			_soapRepository = soapRepository;
 		}
 
-		public async Task<bool> SaveSmartschoolProfilePictureToStudentFolderAsync()
+		public async Task<bool> SaveSmartschoolProfilePictureToStudentFolderAsync(StudentInfo studentInfo)
 		{
-			var studentsData = await _jsonService.ReadDataFromJsonAsync("students.json");
-			var studentsInfo = JsonConvert.DeserializeObject<List<StudentInfo>>(studentsData);
 
-			foreach (var studentInfo in studentsInfo)
-			{
+	
 				var base64picture = await _soapRepository.GetBase64ProfilePictureAsync(studentInfo.Identifier);
 
 				string imageName = $"{Guid.NewGuid()}";
 				await SaveImageToLocalFolder(base64picture, imageName, studentInfo);
 				studentInfo.ProfilePicture = string.Empty;
-			}
-			var studentsInfoJson = JsonConvert.SerializeObject(studentsInfo, Formatting.Indented);
-			await _jsonService.SaveDataAsJsonAsync(studentsInfoJson, "students.json");
 
 			return true;
 		}
 
-		public async Task<bool> CreateFoldersForStudentsAsync(List<StudentInfo> studentsInfo)
+		public async Task<bool> CreateFoldersForStudentsAsync(StudentInfo studentInfo)
 		{
 			try
 			{
-				foreach (var studentInfo in studentsInfo)
-				{
+	
 
 					string basePath = Path.Combine(Environment.GetExternalStoragePublicDirectory(Environment.DirectoryPictures).AbsolutePath, "PicMe");
 					string studentFolderPath = Path.Combine(basePath, $"{studentInfo.Identifier.Trim()}");
@@ -66,10 +59,6 @@ namespace PicMe.Platforms.Android
 						Directory.CreateDirectory(studentFolderPath);
 					}
 
-				}
-				var studentsInfoJson = JsonConvert.SerializeObject(studentsInfo, Formatting.Indented);
-				await _jsonService.SaveDataAsJsonAsync(studentsInfoJson, "students.json");
-				await SaveSmartschoolProfilePictureToStudentFolderAsync();
 				return true;
 
 			}
@@ -79,6 +68,15 @@ namespace PicMe.Platforms.Android
 				return false;
 			}
 		}
+
+		public async Task<bool> CreateStudentJsonFile(List<StudentInfo> studentInfos)
+		{
+            var studentsInfoJson = JsonConvert.SerializeObject(studentInfos, Formatting.Indented);
+            await _jsonService.SaveDataAsJsonAsync(studentsInfoJson, "students.json");
+
+            return true;
+
+        }
 
         public async Task<string> GetLatestPictureForStudentAsync(StudentInfo studentInfo)
         {

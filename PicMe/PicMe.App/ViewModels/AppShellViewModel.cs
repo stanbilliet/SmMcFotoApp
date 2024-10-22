@@ -23,6 +23,9 @@ namespace PicMe.App.ViewModels
         private readonly IPinService _pinService = pinService;
         private readonly ISoapRepository _soapRepository = soapRepository;
 
+       public string VersionNumber => $"Version {AppInfo.VersionString}";
+
+
         [RelayCommand]
         public async Task NavigateToSettings()
         {

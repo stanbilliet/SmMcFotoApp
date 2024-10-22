@@ -21,11 +21,6 @@
         Route="SelectClassPage" />
     </FlyoutItem>
 
-    <FlyoutItem Title="{x:Static resx:AppResources.ClassListTitle}" Icon="{mi:Material Icon=PhotoLibrary, IconColor=#F8922E}">
-        <ShellContent
-        ContentTemplate="{DataTemplate local:ClassListPage}"
-        Route="ClassListPage" />
-    </FlyoutItem>
 
     <FlyoutItem Title="{x:Static resx:AppResources.SyncTitle}" Icon="{mi:Material Icon=CloudSync, IconColor=#B2D438}">
         <ShellContent
@@ -40,6 +35,10 @@
 
     <Shell.FlyoutFooter>
         <Grid Padding="10" ColumnSpacing="19" HorizontalOptions="Center" VerticalOptions="End">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -47,13 +46,17 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Button Text="Nl" Grid.Column="0" Command="{Binding SetAppLanguageCommand}" CommandParameter="nl" />
+            <Button Grid.Row="0" Text="Nl" Grid.Column="0" Command="{Binding SetAppLanguageCommand}" CommandParameter="nl" />
 
-            <Button Text="En" Grid.Column="1" Command="{Binding SetAppLanguageCommand}" CommandParameter="en" />
+            <Button Grid.Row="0"  Text="En" Grid.Column="1" Command="{Binding SetAppLanguageCommand}" CommandParameter="en" />
 
-            <Button Text="Fr" Grid.Column="2" Command="{Binding SetAppLanguageCommand}" CommandParameter="fr" />
+            <Button Grid.Row="0"  Text="Fr" Grid.Column="2" Command="{Binding SetAppLanguageCommand}" CommandParameter="fr" />
+
+            <Button Grid.Row="0" Text="De" Grid.Column="3" Command="{Binding SetAppLanguageCommand}" CommandParameter="De" />
             
-            <Button Text="De" Grid.Column="3" Command="{Binding SetAppLanguageCommand}" CommandParameter="De" />
+
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding VersionNumber}" HorizontalOptions="Center" VerticalOptions="End" />
+
         </Grid>
     </Shell.FlyoutFooter>
 

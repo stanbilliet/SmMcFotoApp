@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+                         Shell.BackgroundColor="LightBlue"
              x:Class="PicMe.App.MainPage">
 
     <ScrollView>
@@ -23,7 +24,7 @@
                 Aspect="AspectFit"/>
 
             <Label
-                Text="{Binding Name}"
+                Text="Welkom"
                 Style="{StaticResource Headline}"
                 Margin="{OnPlatform Android='0,80,0,0', WinUI='0,100,0,0'}"
                 SemanticProperties.HeadingLevel="Level1" />
