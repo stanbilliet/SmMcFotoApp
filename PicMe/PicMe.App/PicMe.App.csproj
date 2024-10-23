@@ -14,20 +14,19 @@
 		<ApplicationId>com.DeVarens.picme.app</ApplicationId>
 		<ApplicationDisplayVersion>1.2</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
-
-    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
-    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
     
 		<UserSecretsId>bd9efbb6-bc51-45d9-9ce6-f048c9bcc4a3</UserSecretsId>
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
 		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
 		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-		<AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-		<AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<PackageVersion>1.2</PackageVersion>
 		<PackageCertificateThumbprint>F7E91C029EB9930CC06163C8FF1B0D6AD59FCAAC</PackageCertificateThumbprint>
+		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 
   </PropertyGroup>
 
@@ -69,11 +68,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\PicMe.Core\PicMe.Core.csproj" />
-		<ProjectReference Include="..\PicMe.Infrastructure\PicMe.Infrastructure.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Compile Update="Resources\Strings\AppResources.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
@@ -89,6 +83,15 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>AppResources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Properties\PublishProfiles\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\PicMe.Core\PicMe.Core.csproj" />
+	  <ProjectReference Include="..\PicMe.Infrastructure\PicMe.Infrastructure.csproj" />
 	</ItemGroup>
 
 
