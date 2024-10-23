@@ -43,7 +43,13 @@
                                    Source="{Binding ImagePath}"
                                     IsVisible="{Binding IsTakingPicture, Converter={StaticResource InverseBooleanConverter}}"
                                    VerticalOptions="Center" 
-                                   HorizontalOptions="Center"/>
+                                   HorizontalOptions="Center">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer   
+                                        Command="{Binding Source={x:Reference PageName}, Path=BindingContext.ImageTappedCommand}"
+                                        CommandParameter="{Binding .}" NumberOfTapsRequired="2" />
+                                </Image.GestureRecognizers>
+                            </Image>
                             <StackLayout Grid.Column="1" Padding="20, 0"
                                          Orientation="Horizontal"
                                          HorizontalOptions="Start" 

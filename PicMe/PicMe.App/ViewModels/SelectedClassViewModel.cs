@@ -245,6 +245,52 @@ namespace PicMe.App.ViewModels
         }
 
         [RelayCommand]
+        private async Task ImageTapped(StudentInfo studentInfo)
+        {
+            //Get student latest picture
+            var latestPicture = await _storageService.GetLatestPictureForStudentAsync(studentInfo);
+
+            if (!string.IsNullOrWhiteSpace(latestPicture))
+            {
+                await Application.Current.MainPage.DisplayAlert("Info", "Laatst genomen foto van " +
+                    $"{studentInfo.GivenName} {studentInfo.FamilyName}" + "werd geselecteerd", "OK");
+
+                var index = StudentsInfo.IndexOf(studentInfo);
+
+                StudentsInfo[index].IsTakingPicture = false;
+
+                StudentsInfo[index].IsUpdated = true;
+
+                //convert picture to base64 from file path
+
+                byte[] photoBytes = File.ReadAllBytes(latestPicture);
+
+                string base64Image = Convert.ToBase64String(photoBytes);
+
+                StudentsInfo[index].ProfilePicture = base64Image;
+
+                //update the list
+
+                StudentsInfo = new ObservableCollection<StudentInfo>(StudentsInfo);
+
+                //notify
+
+                OnPropertyChanged(nameof(HasUpdatedStudents));
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Info", "Geen foto gevonden voor " +
+                    $"{studentInfo.GivenName} {studentInfo.FamilyName}", "OK");
+            }
+
+
+
+            await SaveCurrentState();
+
+
+        }
+
+        [RelayCommand]
         private async Task SetStudentsAccountPictureAsync()
         {
             try
