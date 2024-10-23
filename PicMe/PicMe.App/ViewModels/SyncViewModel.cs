@@ -96,6 +96,14 @@ namespace PicMe.App.ViewModels
             var popup = new DeleteConfirmPopup();
             var currentPage = Application.Current.MainPage;
             var result = await currentPage.ShowPopupAsync(popup);
+
+            if ((bool)result)
+            {
+                await _storageService.DeleteStudentPictures();
+
+                await Toast.Toast.ToastAlertAsync("Data is verwijderd! Synchroniseren zonder foto's...");
+
+            }
         }
 
         public override void OnLanguageChanged()

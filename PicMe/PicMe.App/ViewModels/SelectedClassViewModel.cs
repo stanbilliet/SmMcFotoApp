@@ -57,7 +57,7 @@ namespace PicMe.App.ViewModels
 
         partial void OnClassCodeChanged(string value)
         {
-            LoadStudentsAsync(value);
+           _ = LoadStudentsAsync(value);
         }
 
         private async Task LoadStudentsAsync(string classCode)
@@ -81,8 +81,9 @@ namespace PicMe.App.ViewModels
 #endif
                         studentInfoList.Add(student);
                     }
-
+                   
                     StudentsInfo = new ObservableCollection<StudentInfo>(studentInfoList);
+                    OnPropertyChanged(nameof(HasUpdatedStudents));
                 }
                 else
                 {

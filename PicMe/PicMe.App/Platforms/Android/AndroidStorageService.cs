@@ -21,56 +21,56 @@ using PicMe.Core.Helpers;
 [assembly: Dependency(typeof(AndroidStorageService))]
 namespace PicMe.Platforms.Android
 {
-	public class AndroidStorageService : IStorageService
-	{
-		private readonly IJsonService _jsonService;
-		private readonly ISoapRepository _soapRepository;
+    public class AndroidStorageService : IStorageService
+    {
+        private readonly IJsonService _jsonService;
+        private readonly ISoapRepository _soapRepository;
 
-		public AndroidStorageService(IJsonService jsonService, ISoapRepository soapRepository)
-		{
-			_jsonService = jsonService;
-			_soapRepository = soapRepository;
-		}
+        public AndroidStorageService(IJsonService jsonService, ISoapRepository soapRepository)
+        {
+            _jsonService = jsonService;
+            _soapRepository = soapRepository;
+        }
 
-		public async Task<bool> SaveSmartschoolProfilePictureToStudentFolderAsync(StudentInfo studentInfo)
-		{
+        public async Task<bool> SaveSmartschoolProfilePictureToStudentFolderAsync(StudentInfo studentInfo)
+        {
 
-	
-				var base64picture = await _soapRepository.GetBase64ProfilePictureAsync(studentInfo.Identifier);
 
-				string imageName = $"{Guid.NewGuid()}";
-				await SaveImageToLocalFolder(base64picture, imageName, studentInfo);
-				studentInfo.ProfilePicture = string.Empty;
+            var base64picture = await _soapRepository.GetBase64ProfilePictureAsync(studentInfo.Identifier);
 
-			return true;
-		}
+            string imageName = $"{Guid.NewGuid()}";
+            await SaveImageToLocalFolder(base64picture, imageName, studentInfo);
+            studentInfo.ProfilePicture = string.Empty;
 
-		public async Task<bool> CreateFoldersForStudentsAsync(StudentInfo studentInfo)
-		{
-			try
-			{
-	
+            return true;
+        }
 
-					string basePath = Path.Combine(Environment.GetExternalStoragePublicDirectory(Environment.DirectoryPictures).AbsolutePath, "PicMe");
-					string studentFolderPath = Path.Combine(basePath, $"{studentInfo.Identifier.Trim()}");
+        public async Task<bool> CreateFoldersForStudentsAsync(StudentInfo studentInfo)
+        {
+            try
+            {
 
-					if (!Directory.Exists(studentFolderPath))
-					{
-						Directory.CreateDirectory(studentFolderPath);
-					}
 
-				return true;
+                string basePath = Path.Combine(Environment.GetExternalStoragePublicDirectory(Environment.DirectoryPictures).AbsolutePath, "PicMe");
+                string studentFolderPath = Path.Combine(basePath, $"{studentInfo.Identifier.Trim()}");
 
-			}
-			catch (Exception ex)
-			{
-				await Toast.ToastAlertAsync($"Er was een probleem met het aanmaken van de mappen {ex.Message}");
-				return false;
-			}
-		}
+                if (!Directory.Exists(studentFolderPath))
+                {
+                    Directory.CreateDirectory(studentFolderPath);
+                }
 
-		public async Task<bool> CreateStudentJsonFile(List<StudentInfo> studentInfos)
-		{
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                await Toast.ToastAlertAsync($"Er was een probleem met het aanmaken van de mappen {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> CreateStudentJsonFile(List<StudentInfo> studentInfos)
+        {
             var studentsInfoJson = JsonConvert.SerializeObject(studentInfos, Formatting.Indented);
             await _jsonService.SaveDataAsJsonAsync(studentsInfoJson, "students.json");
 
@@ -82,8 +82,8 @@ namespace PicMe.Platforms.Android
         {
             string basePath = Path.Combine(Environment.GetExternalStoragePublicDirectory(Environment.DirectoryPictures).AbsolutePath, "PicMe");
 
-			if (!Directory.Exists(basePath))
-			{
+            if (!Directory.Exists(basePath))
+            {
 
                 //create
                 Directory.CreateDirectory(basePath);
@@ -103,7 +103,7 @@ namespace PicMe.Platforms.Android
 
             if (imageFiles.Length == 0)
             {
-				return string.Empty;
+                return string.Empty;
             }
 
             var latestFile = imageFiles
@@ -115,39 +115,39 @@ namespace PicMe.Platforms.Android
         }
 
         public async Task<bool> SaveImageToAppData(string pictureName, string base64ImageString)
-		{
-			try
-			{
-				string documentsPath = FileSystem.AppDataDirectory;
-				string oldFilePath = $"{documentsPath}/{pictureName}";
-				string tempFilePath = $"{documentsPath}/{pictureName}.temp";
+        {
+            try
+            {
+                string documentsPath = FileSystem.AppDataDirectory;
+                string oldFilePath = $"{documentsPath}/{pictureName}";
+                string tempFilePath = $"{documentsPath}/{pictureName}.temp";
 
-				if (File.Exists(tempFilePath))
-				{
-					File.Delete(tempFilePath);
-				}
+                if (File.Exists(tempFilePath))
+                {
+                    File.Delete(tempFilePath);
+                }
 
-				byte[] imageBytes = Convert.FromBase64String(base64ImageString);
-				File.WriteAllBytes(tempFilePath, imageBytes);
+                byte[] imageBytes = Convert.FromBase64String(base64ImageString);
+                File.WriteAllBytes(tempFilePath, imageBytes);
 
-				if (File.Exists(oldFilePath))
-				{
-					File.Delete(oldFilePath);
-				}
+                if (File.Exists(oldFilePath))
+                {
+                    File.Delete(oldFilePath);
+                }
 
-				File.Move(tempFilePath, oldFilePath);
+                File.Move(tempFilePath, oldFilePath);
 
-				return true;
-			}
-			catch (Exception ex)
-			{
-				await Toast.ToastAlertAsync($"Er ging iets mis bij het opslaan van het bestand van {pictureName} {ex.Message} OK");
-				return false;
-			}
-		}
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await Toast.ToastAlertAsync($"Er ging iets mis bij het opslaan van het bestand van {pictureName} {ex.Message} OK");
+                return false;
+            }
+        }
 
-		public async Task<string> SaveImageToLocalFolder(string base64Image, string imageName, StudentInfo studentInfo)
-		{
+        public async Task<string> SaveImageToLocalFolder(string base64Image, string imageName, StudentInfo studentInfo)
+        {
             try
             {
                 byte[] imageBytes = Convert.FromBase64String(base64Image);
@@ -173,20 +173,24 @@ namespace PicMe.Platforms.Android
                 return null;
             }
 
-		}
+        }
 
-		public Task<string> LoadImageFromLocalFolder(string pictureName)
-		{
+        public Task<bool> DeleteStudentPictures()
+        {
+            string basePath = Path.Combine(Environment.GetExternalStoragePublicDirectory(Environment.DirectoryPictures).AbsolutePath, "PicMe");
 
-			string documentsPath = FileSystem.AppDataDirectory;
-			string filePath = Path.Combine(documentsPath, pictureName);
+            //get all folders
 
-			if (File.Exists(filePath))
-			{
-				string base64Image = File.ReadAllText(filePath);
-				return Task.FromResult(base64Image);
-			}
-			return null;
-		}
+            var studentFolders = Directory.GetDirectories(basePath);
+
+            foreach (var studentFolder in studentFolders)
+            {
+                Directory.Delete(studentFolder, true);
+
+            }
+
+            return Task.FromResult(true);
+
+        }
     }
 }
