@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using MauiIcons.Material;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using PicMe.App.Core.Interfaces.Repositories;
 using PicMe.App.Core.Interfaces.Services;
 using PicMe.App.Core.Services;
@@ -71,7 +72,9 @@ namespace PicMe.App
                 .UseMaterialMauiIcons()
                 .UseMauiApp<App>()
                 .UseSkiaSharp()
-                .UseMauiCommunityToolkit()
+                .UseMauiCommunityToolkit(options => {
+  
+            })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

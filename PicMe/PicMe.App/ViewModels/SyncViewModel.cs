@@ -35,7 +35,7 @@ namespace PicMe.App.ViewModels
 
             try
             {
-                await Toast.Toast.ToastAlertAsync("Synchroniseren is begonnen! Dit kan even duren! Even geduld aub!");
+                await Toast.ToastShowter.ToastAlertAsync("Synchroniseren is begonnen! Dit kan even duren! Even geduld aub!");
 
                 var enrollments = await _oneRosterRepository.GetAllEnrollmentsAsync();
 
@@ -92,7 +92,7 @@ namespace PicMe.App.ViewModels
             {
                 await _storageService.DeleteStudentPictures();
 
-                await Toast.Toast.ToastAlertAsync("Data is verwijderd!");
+                await Toast.ToastShowter.ToastAlertAsync("Data is verwijderd!");
 
             }
         }

@@ -222,7 +222,7 @@ namespace PicMe.App.ViewModels
 
         public async void Snack()
         {
-            await Toast.Toast.ToastAlertAsync("Heel mooi");
+            await Toast.ToastShowter.ToastAlertAsync("Heel mooi");
         }
 
         [RelayCommand]

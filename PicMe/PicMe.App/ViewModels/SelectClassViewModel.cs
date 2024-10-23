@@ -108,8 +108,8 @@ namespace PicMe.App.ViewModels
             ClassCode = selectedClass.ClassCode;
             await Shell.Current.GoToAsync($"{nameof(SelectedClassPage)}?classCode={classCode}");
 
-            var successToast = CommunityToolkit.Maui.Alerts.Toast.Make($"U wordt doorverwezen naar de geselecteerde klas ({SelectedClass.ClassCode})", ToastDuration.Long, 14);
-            await successToast.Show();
+            await Toast.ToastShowter.ToastAlertAsync($"U wordt doorverwezen naar de geselecteerde klas ({SelectedClass.ClassCode})");
+  
         }
 
         public override void OnLanguageChanged()

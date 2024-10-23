@@ -32,7 +32,7 @@ namespace PicMe.App
             backButtonPressCount++;
             if (backButtonPressCount == 1)
             {
-                Toast.Toast.ToastAlertAsync("Druk nog een keer om terug te keren.");
+                Toast.ToastShowter.ToastAlertAsync("Druk nog een keer om terug te keren.");
 
                 resetTimer.Start();
             }

@@ -23,7 +23,7 @@
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<PackageVersion>1.2</PackageVersion>
-		<PackageCertificateThumbprint>F7E91C029EB9930CC06163C8FF1B0D6AD59FCAAC</PackageCertificateThumbprint>
+		<PackageCertificateThumbprint>535967C538FFBCAF5304AFA76137FC5CDE970B88</PackageCertificateThumbprint>
 		<AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>

@@ -68,45 +68,40 @@ namespace PicMe.App.ViewModels
 
             if (string.IsNullOrWhiteSpace(schoolEntry))
             {
-                var errorToast = CommunityToolkit.Maui.Alerts.Toast.Make
-                    ("Gelieve een school in te vullen!", ToastDuration.Short, 14);
-                errorToast.Show();
+              Toast.ToastShowter.ToastAlertAsync("Gelieve een school in te vullen!");
+
                 hasError = true;
                 return hasError;
             }
 
             if (string.IsNullOrWhiteSpace(clientIdEntry))
             {
-                var errorToast = CommunityToolkit.Maui.Alerts.Toast.Make
-                    ("Gelieve een client id in te vullen!", ToastDuration.Short, 14);
-                errorToast.Show();
+                Toast.ToastShowter.ToastAlertAsync("Gelieve een client id in te vullen!");
+
                 hasError = true;
                 return hasError;
             }
 
             if (string.IsNullOrWhiteSpace(clientSecretEntry))
             {
-                var errorToast = CommunityToolkit.Maui.Alerts.Toast.Make
-                    ("Gelieve een client secret in te vullen!", ToastDuration.Short, 14);
-                errorToast.Show();
+                Toast.ToastShowter.ToastAlertAsync("Gelieve een client secret in te vullen!");
+
                 hasError = true;
                 return hasError;
             }
 
             if (string.IsNullOrWhiteSpace(apiKeyEntry))
             {
-                var errorToast = CommunityToolkit.Maui.Alerts.Toast.Make
-                    ("Gelieve een api key in te vullen!", ToastDuration.Short, 14);
-                errorToast.Show();
+                Toast.ToastShowter.ToastAlertAsync("Gelieve een api key in te vullen!");
+
                 hasError = true;
                 return hasError;
             }
 
             if (string.IsNullOrWhiteSpace(senderEntry))
             {
-                var errorToast = CommunityToolkit.Maui.Alerts.Toast.Make
-                    ("Gelieve een sender in te vullen!", ToastDuration.Short, 14);
-                errorToast.Show();
+                Toast.ToastShowter.ToastAlertAsync("Gelieve een sender in te vullen!");
+
                 hasError = true;
                 return hasError;
             }
@@ -146,20 +141,19 @@ namespace PicMe.App.ViewModels
 
             if (isSaved)
             {
-                var successToast = CommunityToolkit.Maui.Alerts.Toast.Make("Instellingen zijn opgeslagen!", ToastDuration.Short, 14);
-                await successToast.Show();
+                await Toast.ToastShowter.ToastAlertAsync("Instellingen zijn opgeslagen!");
+
 
                 await Task.Delay(3000);
 
-                var redirectToast = CommunityToolkit.Maui.Alerts.Toast.Make("Je wordt doorverwezen naar de Sync pagina.", ToastDuration.Short, 14);
-                await redirectToast.Show();
+                await Toast.ToastShowter.ToastAlertAsync("Je wordt doorverwezen naar de Sync pagina.");
 
                 await Shell.Current.GoToAsync($"//{nameof(SyncPage)}");
             }
             else
             {
-                var errorToast = CommunityToolkit.Maui.Alerts.Toast.Make("Het opslaan is mislukt.", ToastDuration.Short, 14);
-                await errorToast.Show();
+                await Toast.ToastShowter.ToastAlertAsync("Het opslaan is mislukt.");
+
             }
 
         }

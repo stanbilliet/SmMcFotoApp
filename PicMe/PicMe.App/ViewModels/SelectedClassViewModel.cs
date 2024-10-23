@@ -189,7 +189,7 @@ namespace PicMe.App.ViewModels
 
                     if (!string.IsNullOrWhiteSpace(result))
                     {
-                        await Toast.Toast.ToastAlertAsync($"Foto van {studentInfo.GivenName} " +
+                        await Toast.ToastShowter.ToastAlertAsync($"Foto van {studentInfo.GivenName} " +
                                                            $"{studentInfo.FamilyName} is succesvol geupdate.");
 
                         studentInfo.IsUpdated = false;
