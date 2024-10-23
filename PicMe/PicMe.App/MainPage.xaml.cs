@@ -1,5 +1,4 @@
-﻿using MauiIcons.Core;
-using PicMe.App.ViewModels;
+﻿using PicMe.App.ViewModels;
 
 namespace PicMe.App
 {

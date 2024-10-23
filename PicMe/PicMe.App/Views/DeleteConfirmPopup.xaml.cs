@@ -4,10 +4,10 @@ namespace PicMe.App.Views;
 
 public partial class DeleteConfirmPopup : Popup
 {
-	public DeleteConfirmPopup()
-	{
-		InitializeComponent();
-	}
+    public DeleteConfirmPopup()
+    {
+        InitializeComponent();
+    }
 
     private void OnCancelButtonClicked(object sender, EventArgs e)
     {

@@ -1,25 +1,14 @@
-﻿using PicMe.Core.Entities;
-using PicMe.Core.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Android.OS;
-using Newtonsoft.Json;
-using PicMe.Core.Interfaces.Repositories;
-using AndroidX.Core.App;
-using Android.App;
-using Android.Content;
-using Android.Provider;
-using Application = Android.App.Application;
-using PicMe.Platforms.Android;
-using PicMe.App;
-using PicMe.App.Toast;
+﻿using Newtonsoft.Json;
+using PicMe.App.Core.Entities;
+using PicMe.App.Core.Interfaces.Repositories;
+using PicMe.App.Core.Interfaces.Services;
+using PicMe.App.Platforms.Android;
+using CommunityToolkit.Maui.Alerts;
 using Environment = Android.OS.Environment;
-using PicMe.Core.Helpers;
+using CommunityToolkit.Maui.Core;
 
 [assembly: Dependency(typeof(AndroidStorageService))]
-namespace PicMe.Platforms.Android
+namespace PicMe.App.Platforms.Android
 {
     public class AndroidStorageService : IStorageService
     {
@@ -64,7 +53,9 @@ namespace PicMe.Platforms.Android
             }
             catch (Exception ex)
             {
-                await Toast.ToastAlertAsync($"Er was een probleem met het aanmaken van de mappen {ex.Message}");
+
+                var toast = CommunityToolkit.Maui.Alerts.Toast.Make($"Er was een probleem met het aanmaken van de mappen {ex.Message}");
+                await toast.Show();
                 return false;
             }
         }
@@ -136,8 +127,8 @@ namespace PicMe.Platforms.Android
             }
             catch (Exception ex)
             {
-                // Display a toast message if there's an error
-                await Toast.ToastAlertAsync($"Er was een probleem met het opslaan van de foto van {studentInfo.FamilyName} {studentInfo.GivenName}: {ex.Message}");
+                var toast = CommunityToolkit.Maui.Alerts.Toast.Make($"Er was een probleem met het opslaan van de foto van {studentInfo.FamilyName} {studentInfo.GivenName}: {ex.Message}");
+                await toast.Show();
                 return null;
             }
 

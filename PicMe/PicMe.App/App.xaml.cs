@@ -1,6 +1,6 @@
-﻿using PicMe.App.ViewModels;
-using PicMe.Core.Interfaces.Repositories;
-using PicMe.Core.Interfaces.Services;
+﻿using PicMe.App.Core.Interfaces.Repositories;
+using PicMe.App.Core.Interfaces.Services;
+using PicMe.App.ViewModels;
 
 namespace PicMe.App
 {

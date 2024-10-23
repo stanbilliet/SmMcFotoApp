@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
-using PicMe.Core.Entities;
-using PicMe.Core.Interfaces.Repositories;
-using PicMe.Core.Interfaces.Services;
+using PicMe.App.Core.Entities;
+using PicMe.App.Core.Interfaces.Repositories;
+using PicMe.App.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

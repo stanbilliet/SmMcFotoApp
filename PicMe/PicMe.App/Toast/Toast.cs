@@ -1,9 +1,4 @@
 ﻿using CommunityToolkit.Maui.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PicMe.App.Toast
 {
@@ -14,7 +9,7 @@ namespace PicMe.App.Toast
             CancellationTokenSource cancellationTokenSource = new();
 
             var toast = CommunityToolkit.Maui.Alerts.Toast.Make(message, ToastDuration.Short, 14);
-                await toast.Show(cancellationTokenSource.Token);
+            await toast.Show(cancellationTokenSource.Token);
         }
     }
 }

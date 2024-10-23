@@ -1,15 +1,9 @@
 ﻿using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PicMe.App.Core.Interfaces.Services;
 using PicMe.Core.Entities;
-using PicMe.Core.Interfaces.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace PicMe.App.ViewModels
 {
@@ -45,9 +39,9 @@ namespace PicMe.App.ViewModels
 
         public string SearchClass
         {
-            get 
-            { 
-                return searchClass; 
+            get
+            {
+                return searchClass;
             }
             set
             {

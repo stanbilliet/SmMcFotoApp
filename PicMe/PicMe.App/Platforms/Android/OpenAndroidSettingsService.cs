@@ -1,12 +1,7 @@
 ﻿using Android.Content;
-using PicMe.App.Platforms.Android;
-using PicMe.Core.Interfaces.Services;
 using Android.Provider;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PicMe.App.Core.Interfaces.Services;
+using PicMe.App.Platforms.Android;
 
 [assembly: Dependency(typeof(OpenAndroidSettingsService))]
 namespace PicMe.App.Platforms.Android

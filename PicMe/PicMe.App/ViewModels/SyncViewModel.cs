@@ -1,18 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PicMe.Core.Interfaces.Repositories;
-using PicMe.Core.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Text.Json;
-using Newtonsoft.Json;
-using PicMe.Core.Entities;
+using PicMe.App.Core.Interfaces.Repositories;
+using PicMe.App.Core.Interfaces.Services;
 using PicMe.App.Views;
-using CommunityToolkit.Maui.Views;
 
 namespace PicMe.App.ViewModels
 {
@@ -60,7 +51,7 @@ namespace PicMe.App.ViewModels
                     {
                         await _storageService.SaveSmartschoolProfilePictureToStudentFolderAsync(enrollment);
                     }
-                  
+
                     ProgressValue += localProgress;
 
                 }

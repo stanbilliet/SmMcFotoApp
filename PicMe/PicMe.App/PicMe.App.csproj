@@ -24,13 +24,11 @@
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<PackageVersion>1.2</PackageVersion>
 		<PackageCertificateThumbprint>F7E91C029EB9930CC06163C8FF1B0D6AD59FCAAC</PackageCertificateThumbprint>
-		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+		<AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 
   </PropertyGroup>
-
-
 
 	<ItemGroup>
 		<MauiIcon Include="Resources\AppIcon\picmeicon.png" Color="#ffffff" Resize="True" BaseSize="300,185" />
@@ -63,6 +61,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.92" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
 		<PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.92" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="PINView.MAUI" Version="1.0.2" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="3.0.0-preview.7" />
 	</ItemGroup>
@@ -88,12 +87,6 @@
 	<ItemGroup>
 	  <Folder Include="Properties\PublishProfiles\" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\PicMe.Core\PicMe.Core.csproj" />
-	  <ProjectReference Include="..\PicMe.Infrastructure\PicMe.Infrastructure.csproj" />
-	</ItemGroup>
-
 
 
 </Project>

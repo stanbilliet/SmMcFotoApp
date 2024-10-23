@@ -1,5 +1,4 @@
 using PicMe.App.ViewModels;
-using PicMe.Core.Interfaces.Services;
 
 namespace PicMe.App;
 

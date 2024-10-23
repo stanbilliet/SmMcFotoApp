@@ -1,18 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using PicMe.App.Resources.Strings;
+﻿using CommunityToolkit.Mvvm.Input;
+using PicMe.App.Core.Interfaces.Repositories;
+using PicMe.App.Core.Interfaces.Services;
 using PicMe.App.Views;
-using PicMe.Core.Interfaces.Repositories;
-using PicMe.Core.Interfaces.Services;
-using PicMe.Core.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace PicMe.App.ViewModels
 {
@@ -23,7 +12,7 @@ namespace PicMe.App.ViewModels
         private readonly IPinService _pinService = pinService;
         private readonly ISoapRepository _soapRepository = soapRepository;
 
-       public string VersionNumber => $"Version {AppInfo.VersionString}";
+        public string VersionNumber => $"Version {AppInfo.VersionString}";
 
 
         [RelayCommand]
@@ -62,10 +51,10 @@ namespace PicMe.App.ViewModels
             });
         }
 
-        public override void OnLanguageChanged()    
+        public override void OnLanguageChanged()
         {
             base.OnLanguageChanged();
             base.SelectedLanguage = SelectedLanguage;
-        }        
+        }
     }
 }

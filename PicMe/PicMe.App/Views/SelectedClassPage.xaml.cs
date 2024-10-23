@@ -1,15 +1,14 @@
 using PicMe.App.ViewModels;
-using System.Timers;
 
 namespace PicMe.App;
 
 public partial class SelectedClassPage : ContentPage
 {
     public SelectedClassPage(SelectedClassViewModel selectedClassViewModel)
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
-		BindingContext = selectedClassViewModel;
+        BindingContext = selectedClassViewModel;
     }
 
     protected override bool OnBackButtonPressed()

@@ -1,14 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using PicMe.Core.Entities;
-using PicMe.Core.Interfaces.Repositories;
-using PicMe.Core.Interfaces.Services;
-using System;
-using System.Collections.Generic;
+using PicMe.App.Core.Entities;
+using PicMe.App.Core.Interfaces.Repositories;
+using PicMe.App.Core.Interfaces.Services;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace PicMe.App.ViewModels
@@ -57,7 +52,7 @@ namespace PicMe.App.ViewModels
 
         partial void OnClassCodeChanged(string value)
         {
-           _ = LoadStudentsAsync(value);
+            _ = LoadStudentsAsync(value);
         }
 
         private async Task LoadStudentsAsync(string classCode)
@@ -81,7 +76,7 @@ namespace PicMe.App.ViewModels
 #endif
                         studentInfoList.Add(student);
                     }
-                   
+
                     StudentsInfo = new ObservableCollection<StudentInfo>(studentInfoList);
                     OnPropertyChanged(nameof(HasUpdatedStudents));
                 }
@@ -125,7 +120,7 @@ namespace PicMe.App.ViewModels
                         }
 
                         string base64Image = Convert.ToBase64String(photoBytes);
-               
+
 
                         string savedImageUri = await _storageService.SaveImageToLocalFolder(
                             base64Image,
@@ -138,10 +133,10 @@ namespace PicMe.App.ViewModels
                             StudentsInfo[index].IsUpdated = true;
                             StudentsInfo[index].ImagePath = savedImageUri;
                             StudentsInfo[index].ProfilePicture = base64Image;
-         
+
                             await Application.Current.MainPage.DisplayAlert("Succes", $"Foto van {studentInfo.GivenName} " +
                                 $"{studentInfo.FamilyName} is succesvol genomen en opgeslagen.", "OK");
-                            
+
                             StudentsInfo[index].IsTakingPicture = false;
                             //update the list
 
@@ -174,7 +169,7 @@ namespace PicMe.App.ViewModels
                 await Application.Current.MainPage.DisplayAlert("Error", $"Er is een fout opgetreden: {ex.Message}", "OK");
             }
 
-         
+
 
         }
 
@@ -301,7 +296,7 @@ namespace PicMe.App.ViewModels
                 {
                     foreach (var student in updatedStudents)
                     {
-                       await SetStudentAccountPictureAsync(student);
+                        await SetStudentAccountPictureAsync(student);
                         await Task.Delay(500);
                         student.IsUpdated = false;
                     }
@@ -356,7 +351,7 @@ namespace PicMe.App.ViewModels
                 {
                     resetTimer.Stop();
                     backButtonPressCount = 0;
-                    
+
                     await Shell.Current.GoToAsync($"//{nameof(SelectClassPage)}");
                 }
                 else
