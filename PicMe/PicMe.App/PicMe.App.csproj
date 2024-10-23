@@ -60,6 +60,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\fallback_image.png" />
+	  <None Remove="Resources\Images\logo.jpg" />
 	  <None Remove="Resources\Images\picmeimage.png" />
 	  <None Remove="Resources\Images\pincode_uwp.png" />
 	  <None Remove="Resources\Images\standardstudentimage.jpg" />
@@ -119,6 +120,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="SyncPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\AboutPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\DeleteConfirmPopup.xaml">

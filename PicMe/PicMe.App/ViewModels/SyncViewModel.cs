@@ -101,7 +101,7 @@ namespace PicMe.App.ViewModels
             {
                 await _storageService.DeleteStudentPictures();
 
-                await Toast.Toast.ToastAlertAsync("Data is verwijderd! Synchroniseren zonder foto's...");
+                await Toast.Toast.ToastAlertAsync("Data is verwijderd!");
 
             }
         }

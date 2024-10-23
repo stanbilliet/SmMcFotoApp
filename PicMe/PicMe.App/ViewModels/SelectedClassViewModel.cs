@@ -206,6 +206,10 @@ namespace PicMe.App.ViewModels
 
                         StudentsInfo = new ObservableCollection<StudentInfo>(studentsToUpdate);
 
+                        await SaveCurrentState();
+
+                        OnPropertyChanged(nameof(HasUpdatedStudents));
+
 
                     }
                     else
@@ -252,6 +256,7 @@ namespace PicMe.App.ViewModels
                     foreach (var student in updatedStudents)
                     {
                         await SetStudentAccountPictureAsync(student);
+                        student.IsUpdated = false;
                     }
                 }
                 else
@@ -261,9 +266,24 @@ namespace PicMe.App.ViewModels
 
                 var studentsToUpdate = StudentsInfo.ToList();
 
-                studentsToUpdate.ForEach(s => s.IsUpdated = false);
+                //update students
+
+                foreach (var item in updatedStudents)
+                {
+                    var studentsToUpdateIncollecten = studentsToUpdate.Where(s => s.Identifier == item.Identifier);
+
+                    foreach (var student in studentsToUpdateIncollecten)
+                    {
+                        student.IsUpdated = item.IsUpdated;
+                    }
+
+                }
 
                 StudentsInfo = new ObservableCollection<StudentInfo>(studentsToUpdate);
+
+                await SaveCurrentState();
+
+                OnPropertyChanged(nameof(HasUpdatedStudents));
 
             }
             catch (Exception ex)
@@ -282,22 +302,7 @@ namespace PicMe.App.ViewModels
                     $"Er zijn {updatedStudentsCount} studenten met een ongeupdate foto. " +
                     "Weet je zeker dat je wilt terugkeren?", "Ja", "Nee");
 
-                var studentsToUpdate = await _studentService.GetAllStudentInfo();
-
-                //update students
-
-                foreach (var student in StudentsInfo)
-                {
-                    var studentToUpdate = studentsToUpdate.Where(s => s.Identifier == student.Identifier);
-                    foreach (var item in studentToUpdate)
-                    {
-                        item.ProfilePicture = string.Empty;
-                        item.IsUpdated = student.IsUpdated;
-
-                    }
-                }
-
-                await _storageService.CreateStudentJsonFile(studentsToUpdate);
+                await SaveCurrentState();
 
 
                 if (confirm)
@@ -319,6 +324,27 @@ namespace PicMe.App.ViewModels
                 backButtonPressCount = 0;
                 await Shell.Current.GoToAsync($"//{nameof(SelectClassPage)}");
             }
+        }
+
+        private async Task SaveCurrentState()
+        {
+            var studentsToUpdate = await _studentService.GetAllStudentInfo();
+
+            //update students
+
+            foreach (var student in StudentsInfo)
+            {
+                var studentToUpdate = studentsToUpdate.Where(s => s.Identifier == student.Identifier);
+                foreach (var item in studentToUpdate)
+                {
+                    item.ProfilePicture = string.Empty;
+                    item.IsUpdated = student.IsUpdated;
+
+                }
+            }
+
+            await _storageService.CreateStudentJsonFile(studentsToUpdate);
+
         }
 
         public async Task HandleBackButtonPressAsync()

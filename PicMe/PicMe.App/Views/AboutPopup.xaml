@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="PicMe.App.Views.AboutPopup"
+      >
+    <VerticalStackLayout Padding="20" Spacing="10" BackgroundColor="White"
+                         VerticalOptions="Center" HorizontalOptions="Center"
+                         WidthRequest="300" HeightRequest="300">
+
+        <Label Text="Over dit Project" 
+               FontSize="Large" 
+               HorizontalOptions="Center"
+               FontAttributes="Bold"/>
+
+        <Label Text="Dit project werd gerealiseerd met de gewaardeerde medewerking van studenten uit de opleiding Graduaat Programmeren aan Howest Brugge."
+               FontSize="Small"
+               HorizontalOptions="Center"/>
+
+        <Label Text="De fine-tuning en het onderhoud worden verzorgd door Stan Billiet, ICT-coördinator van SBSO De Varens."
+               FontSize="Small"
+               HorizontalOptions="Center"/>
+
+        <Label Text="Voor vragen of ondersteuning: stan@devarens.be"
+               FontSize="Small"
+               HorizontalOptions="Center"/>
+
+        <Image Source="logo.jpg" HorizontalOptions="Center" WidthRequest="100" HeightRequest="50"/>
+
+        <Button Text="Sluiten" Clicked="Button_Clicked"  BackgroundColor="Green" TextColor="White" HorizontalOptions="Center"/>
+        
+    </VerticalStackLayout>
+</toolkit:Popup>

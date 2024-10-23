@@ -29,9 +29,10 @@
                 Margin="{OnPlatform Android='0,80,0,0', WinUI='0,100,0,0'}"
                 SemanticProperties.HeadingLevel="Level1" />
 
-            <Label
-                Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2" />
+            <Button x:Name="btnGoBackToProductPage"
+                Text="Over de app"
+                Command="{Binding AboutCommand}"
+                Margin="10" />
 
         </VerticalStackLayout>
     </ScrollView>

@@ -27,7 +27,8 @@
         ContentTemplate="{DataTemplate local:SyncPage}"
         Route="SyncPage" />
     </FlyoutItem>
-    
+
+
     <MenuItem 
         Text="{x:Static resx:AppResources.SettingsText}"
         Command="{Binding NavigateToSettingsCommand}"
@@ -53,9 +54,10 @@
             <Button Grid.Row="0"  Text="Fr" Grid.Column="2" Command="{Binding SetAppLanguageCommand}" CommandParameter="fr" />
 
             <Button Grid.Row="0" Text="De" Grid.Column="3" Command="{Binding SetAppLanguageCommand}" CommandParameter="De" />
-            
+
 
             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding VersionNumber}" HorizontalOptions="Center" VerticalOptions="End" />
+          
 
         </Grid>
     </Shell.FlyoutFooter>
