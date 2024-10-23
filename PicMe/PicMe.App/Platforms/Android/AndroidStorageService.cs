@@ -114,38 +114,6 @@ namespace PicMe.Platforms.Android
             return latestFile.FullName;
         }
 
-        public async Task<bool> SaveImageToAppData(string pictureName, string base64ImageString)
-        {
-            try
-            {
-                string documentsPath = FileSystem.AppDataDirectory;
-                string oldFilePath = $"{documentsPath}/{pictureName}";
-                string tempFilePath = $"{documentsPath}/{pictureName}.temp";
-
-                if (File.Exists(tempFilePath))
-                {
-                    File.Delete(tempFilePath);
-                }
-
-                byte[] imageBytes = Convert.FromBase64String(base64ImageString);
-                File.WriteAllBytes(tempFilePath, imageBytes);
-
-                if (File.Exists(oldFilePath))
-                {
-                    File.Delete(oldFilePath);
-                }
-
-                File.Move(tempFilePath, oldFilePath);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                await Toast.ToastAlertAsync($"Er ging iets mis bij het opslaan van het bestand van {pictureName} {ex.Message} OK");
-                return false;
-            }
-        }
-
         public async Task<string> SaveImageToLocalFolder(string base64Image, string imageName, StudentInfo studentInfo)
         {
             try

@@ -74,7 +74,7 @@ namespace PicMe.App.ViewModels
                     {
                         string filepath = FileSystem.AppDataDirectory;
 #if WINDOWS
-                        student.ImagePath = filepath + student.ProfilePicture;
+                        student.ImagePath = await _storageService.GetLatestPictureForStudentAsync(student);
 #elif ANDROID
 
                         student.ImagePath = await _storageService.GetLatestPictureForStudentAsync(student);
@@ -301,7 +301,8 @@ namespace PicMe.App.ViewModels
                 {
                     foreach (var student in updatedStudents)
                     {
-                        await SetStudentAccountPictureAsync(student);
+                       await SetStudentAccountPictureAsync(student);
+                        await Task.Delay(500);
                         student.IsUpdated = false;
                     }
                 }

@@ -13,7 +13,6 @@ namespace PicMe.Core.Interfaces.Services
         Task<bool> CreateFoldersForStudentsAsync(StudentInfo studentInfo);
         Task<bool> CreateStudentJsonFile(List<StudentInfo> studentInfos);
         Task<bool> SaveSmartschoolProfilePictureToStudentFolderAsync(StudentInfo studentInfo);
-        Task<bool> SaveImageToAppData(string pictureName, string base64ImageString);
         Task<string> GetLatestPictureForStudentAsync(StudentInfo studentInfo);
         Task<bool> DeleteStudentPictures();
     }

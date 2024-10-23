@@ -1,16 +1,15 @@
-﻿using Microsoft.Maui.Storage;
-using Newtonsoft.Json;
-using PicMe.App.Platforms.Windows;
+﻿using Newtonsoft.Json;
 using PicMe.Core.Entities;
 using PicMe.Core.Interfaces.Repositories;
 using PicMe.Core.Interfaces.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.UI.Notifications;
 
-[assembly: Dependency(typeof(WindowsStorageService))]
 namespace PicMe.App.Platforms.Windows
 {
     public class WindowsStorageService : IStorageService
@@ -18,136 +17,117 @@ namespace PicMe.App.Platforms.Windows
         private readonly IJsonService _jsonService;
         private readonly ISoapRepository _soapRepository;
 
-
         public WindowsStorageService(IJsonService jsonService, ISoapRepository soapRepository)
         {
             _jsonService = jsonService;
             _soapRepository = soapRepository;
         }
 
-        public async Task<bool> SaveSmartschoolProfilePictureToStudentFolderAsync()
+        public async Task<bool> SaveSmartschoolProfilePictureToStudentFolderAsync(StudentInfo studentInfo)
         {
-            var studentsData = await _jsonService.ReadDataFromJsonAsync("students.json");
-            var studentsInfo = JsonConvert.DeserializeObject<List<StudentInfo>>(studentsData);
+            var base64picture = await _soapRepository.GetBase64ProfilePictureAsync(studentInfo.Identifier);
 
-            foreach (var studentInfo in studentsInfo)
-            {
-                var base64picture = await _soapRepository.GetBase64ProfilePictureAsync(studentInfo.Identifier);
-                string date = DateTime.Now.ToShortDateString();
-                string dateWithoutSlahes = date.Replace("/", "");
-                await SaveImageToLocalFolder(base64picture, $"{studentInfo.FamilyName.Trim()}.{studentInfo.GivenName.Trim()}.{dateWithoutSlahes}",
-                    studentInfo.FamilyName.Trim(), studentInfo.GivenName.Trim());
-
-                studentInfo.ProfilePicture = $"\\{studentInfo.FamilyName.Trim()}.{studentInfo.GivenName.Trim()}\\{studentInfo.FamilyName.Trim()}." +
-                    $"{studentInfo.GivenName.Trim()}.{dateWithoutSlahes}.png";
-            }
-
-            var studentsInfoJson = JsonConvert.SerializeObject(studentsInfo, Formatting.Indented);
-            await _jsonService.SaveDataAsJsonAsync(studentsInfoJson, "students.json");
+            string imageName = $"{Guid.NewGuid()}";
+            await SaveImageToLocalFolder(base64picture, imageName, studentInfo);
+            studentInfo.ProfilePicture = string.Empty;
 
             return true;
-
         }
 
-        public async Task<bool> CreateFoldersForStudentsAsync(List<StudentInfo> studentsInfo)
+        public async Task<bool> CreateFoldersForStudentsAsync(StudentInfo studentInfo)
         {
             try
             {
-
-                foreach (var studentInfo in studentsInfo)
-                {
-                    string basePath = FileSystem.AppDataDirectory;
-                    string studentFolderPath = Path.Combine(basePath, $"{studentInfo.FamilyName.Trim()}.{studentInfo.GivenName.Trim()}");
-
-                    if (!Directory.Exists(studentFolderPath))
-                    {
-                        Directory.CreateDirectory(studentFolderPath);
-                    }
-
-                }
-                var studentsInfoJson = JsonConvert.SerializeObject(studentsInfo, Formatting.Indented);
-                await _jsonService.SaveDataAsJsonAsync(studentsInfoJson, "students.json");
-                await SaveSmartschoolProfilePictureToStudentFolderAsync();
+                StorageFolder picturesFolder = KnownFolders.PicturesLibrary;
+                StorageFolder picMeFolder = await picturesFolder.CreateFolderAsync("PicMe", CreationCollisionOption.OpenIfExists);
+                StorageFolder studentFolder = await picMeFolder.CreateFolderAsync(studentInfo.Identifier.Trim(), CreationCollisionOption.OpenIfExists);
 
                 return true;
             }
-
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", $"Er was een probleem met het aanmaken van de mappen {ex.InnerException.Message}", "OK");
+                ShowToastNotification($"Error creating folder: {ex.Message}");
                 return false;
             }
         }
 
-        public Task<string> LoadImageFromLocalFolder(string imageName)
+        public async Task<bool> CreateStudentJsonFile(List<StudentInfo> studentInfos)
         {
-            if (string.IsNullOrWhiteSpace(imageName))
-            {
-                return null;
-            }
-			try
-			{
+            var studentsInfoJson = JsonConvert.SerializeObject(studentInfos, Formatting.Indented);
+            await _jsonService.SaveDataAsJsonAsync(studentsInfoJson, "students.json");
 
-				string[] parts = imageName.Split('.');
-				string result = string.Join(".", parts[0], parts[1]);
-
-				string picturesDirectory = FileSystem.AppDataDirectory;
-                string albumPath = Path.Combine(picturesDirectory, result);
-                string filePath = Path.Combine(albumPath, imageName);
-
-                if (File.Exists(filePath))
-                {
-                    byte[] imageBytes = File.ReadAllBytes(filePath);
-                    string base64Image = Convert.ToBase64String(imageBytes);
-					return Task.FromResult(base64Image);
-				}
-
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Application.Current.MainPage.DisplayAlert("Error", $"Er was een probleem met het ophalen van de foto {ex.InnerException.Message}", "OK");
-                return null;
-            }
+            return true;
         }
 
-        public async Task<string> SaveImageToLocalFolder(string base64Image, string imageName, string lastName, string firstName)
+        public async Task<string> GetLatestPictureForStudentAsync(StudentInfo studentInfo)
         {
+            StorageFolder picturesFolder = KnownFolders.PicturesLibrary;
+            StorageFolder picMeFolder = await picturesFolder.CreateFolderAsync("PicMe", CreationCollisionOption.OpenIfExists);
+            StorageFolder studentFolder = await picMeFolder.CreateFolderAsync(studentInfo.Identifier.Trim(), CreationCollisionOption.OpenIfExists);
 
-            try     
+            var imageFiles = await studentFolder.GetFilesAsync();
+
+            if (imageFiles.Count == 0)
             {
-                if (base64Image == "23")
-                {
-                    return null;
-                }
+                return string.Empty;
+            }
+
+            var latestFile = imageFiles.OrderByDescending(file => file.DateCreated).FirstOrDefault();
+
+            return latestFile?.Path;
+        }
+        public async Task<string> SaveImageToLocalFolder(string base64Image, string imageName, StudentInfo studentInfo)
+        {
+            try
+            {
                 byte[] imageBytes = Convert.FromBase64String(base64Image);
 
-                string filePath = Path.Combine(FileSystem.AppDataDirectory, $"{lastName.Trim()}.{firstName.Trim()}", $"{imageName}.png");
-                await File.WriteAllBytesAsync(filePath, imageBytes);
+                StorageFolder picturesFolder = KnownFolders.PicturesLibrary;
+                StorageFolder picMeFolder = await picturesFolder.CreateFolderAsync("PicMe", CreationCollisionOption.OpenIfExists);
+                StorageFolder studentFolder = await picMeFolder.CreateFolderAsync(studentInfo.Identifier.Trim(), CreationCollisionOption.OpenIfExists);
 
-                return filePath;
+                StorageFile imageFile = await studentFolder.CreateFileAsync($"{imageName}.jpg", CreationCollisionOption.ReplaceExisting);
+                await FileIO.WriteBytesAsync(imageFile, imageBytes);
+
+                return imageFile.Path;
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", $"Er was een probleem met het opslaan van de foto van {lastName} {firstName}: {ex.Message}", "OK");
+                ShowToastNotification($"Error saving image for {studentInfo.FamilyName} {studentInfo.GivenName}: {ex.Message}");
                 return null;
             }
         }
 
-        public Task<bool> SaveImageToAppData(string pictureName, string base64ImageString)
+        public async Task<bool> DeleteStudentPictures()
         {
+            try
+            {
+                StorageFolder picturesFolder = KnownFolders.PicturesLibrary;
+                StorageFolder picMeFolder = await picturesFolder.CreateFolderAsync("PicMe", CreationCollisionOption.OpenIfExists);
 
-            return Task.FromResult(true);
+                var studentFolders = await picMeFolder.GetFoldersAsync();
+                foreach (var studentFolder in studentFolders)
+                {
+                    await studentFolder.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ShowToastNotification($"Error deleting student pictures: {ex.Message}");
+                return false;
+            }
         }
 
-        public Task<string> SaveImageToLocalFolder(string base64Image, string imageName, StudentInfo studentInfo)
+        private void ShowToastNotification(string message)
         {
-            throw new NotImplementedException();
-        }
+            var toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
+            var toastText = toastXml.GetElementsByTagName("text")[0];
+            toastText.AppendChild(toastXml.CreateTextNode(message));
 
-        public Task<string> GetLatestPictureForStudentAsync(StudentInfo studentInfo)
-        {
-            throw new NotImplementedException();
+            var toastNotification = new ToastNotification(toastXml);
+            ToastNotificationManager.CreateToastNotifier().Show(toastNotification);
         }
     }
 }
