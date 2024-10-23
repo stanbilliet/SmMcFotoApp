@@ -67,6 +67,22 @@ namespace PicMe.Core.Services
             }
         }
 
+        public async Task<List<StudentInfo>> GetAllStudentInfo()
+        {
+            try
+            {
+                var studentsInfoJson = await _jsonService.ReadDataFromJsonAsync("students.json");
+                var students = JsonConvert.DeserializeObject<List<StudentInfo>>(studentsInfoJson);
+
+                return students;
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Er is een fout opgetreden: {ex.Message}", "OK");
+                return null;
+            }
+        }
+
         public async Task<List<StudentInfo>> GetStudentsByClassCodeAsync(string classCode)
         {
             try

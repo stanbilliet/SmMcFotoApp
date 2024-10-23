@@ -195,6 +195,17 @@ namespace PicMe.App.ViewModels
                     {
                         await Toast.Toast.ToastAlertAsync($"Foto van {studentInfo.GivenName} " +
                                                            $"{studentInfo.FamilyName} is succesvol geupdate.");
+
+                        studentInfo.IsUpdated = false;
+
+                        var studentsToUpdate = StudentsInfo;
+
+                        var studentToUpdate = studentsToUpdate.Where(s => s.Identifier == studentInfo.Identifier).FirstOrDefault();
+                        studentToUpdate.IsUpdated = false;
+
+                        StudentsInfo = new ObservableCollection<StudentInfo>(studentsToUpdate);
+
+
                     }
                     else
                     {
@@ -202,6 +213,7 @@ namespace PicMe.App.ViewModels
                             $"Er is een fout opgetreden bij het updaten van de foto van " +
                             $"{studentInfo.GivenName} {studentInfo.FamilyName}.", "OK");
                     }
+
 
                     IsBussy = false;
                 }
@@ -245,6 +257,13 @@ namespace PicMe.App.ViewModels
                 {
                     await Application.Current.MainPage.DisplayAlert("Info", "Geen geupdated foto's om te verzenden.", "OK");
                 }
+
+                var studentsToUpdate = StudentsInfo.ToList();
+
+                studentsToUpdate.ForEach(s => s.IsUpdated = false);
+
+                StudentsInfo = new ObservableCollection<StudentInfo>(studentsToUpdate);
+
             }
             catch (Exception ex)
             {
@@ -262,10 +281,29 @@ namespace PicMe.App.ViewModels
                     $"Er zijn {updatedStudentsCount} studenten met een ongeupdate foto. " +
                     "Weet je zeker dat je wilt terugkeren?", "Ja", "Nee");
 
+                var studentsToUpdate = await _studentService.GetAllStudentInfo();
+
+                //update students
+
+                foreach (var student in StudentsInfo)
+                {
+                    var studentToUpdate = studentsToUpdate.Where(s => s.Identifier == student.Identifier);
+                    foreach (var item in studentToUpdate)
+                    {
+                        item.ProfilePicture = string.Empty;
+                        item.IsUpdated = student.IsUpdated;
+
+                    }
+                }
+
+                await _storageService.CreateStudentJsonFile(studentsToUpdate);
+
+
                 if (confirm)
                 {
                     resetTimer.Stop();
                     backButtonPressCount = 0;
+                    
                     await Shell.Current.GoToAsync($"//{nameof(SelectClassPage)}");
                 }
                 else

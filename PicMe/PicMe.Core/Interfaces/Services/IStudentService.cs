@@ -12,6 +12,8 @@ namespace PicMe.Core.Interfaces.Services
 		Task<List<string>>GetAllStudentsAsync();
 		Task<List<string>>GetAllClassCodes();
 		Task<List<StudentInfo>>GetStudentsByClassCodeAsync(string classCode);
+		Task<List<StudentInfo>> GetAllStudentInfo();
 
-	}
+
+    }
 }

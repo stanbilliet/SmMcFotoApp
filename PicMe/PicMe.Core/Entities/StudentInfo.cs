@@ -21,7 +21,7 @@ namespace PicMe.Core.Entities
 		[JsonProperty("classCode")]
 		public string ClassCode { get; set; }
 		[JsonProperty("profilePicture")]
-		public string ProfilePicture { get; set; }
+		public string ProfilePicture { get; set; } = string.Empty;
 		[JsonProperty("isUpdated")]
 		public bool IsUpdated { get; set; }
 		[JsonProperty("imagePath")]

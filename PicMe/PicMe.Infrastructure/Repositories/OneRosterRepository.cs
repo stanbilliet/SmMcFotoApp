@@ -88,7 +88,6 @@ namespace PicMe.Infrastructure.Repositories
 			var studentsInfo = await _jsonService.ExtractStudentInfoAsync(studentsJson);
 		
 
-
 			return studentsInfo;
 		}
 	}

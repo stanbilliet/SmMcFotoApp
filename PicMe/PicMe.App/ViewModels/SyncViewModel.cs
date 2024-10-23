@@ -60,21 +60,13 @@ namespace PicMe.App.ViewModels
                     {
                         await _storageService.SaveSmartschoolProfilePictureToStudentFolderAsync(enrollment);
                     }
-
-                    enrollment.ProfilePicture = string.Empty;
-
+                  
                     ProgressValue += localProgress;
-
 
                 }
 
-                result = await _storageService.CreateStudentJsonFile(enrollments);
-
                 ProgressValue = 0;
 
-
-
-                //var enrollmentsJson = System.Text.Json.JsonSerializer.Serialize(enrollments);
 
                 if (result)
                 {
