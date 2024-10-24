@@ -102,7 +102,7 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Button Text="Verzend alle geupdated foto's" 
+        <Button Text="Verzend alle geupdate foto's" 
         Command="{Binding SetStudentsAccountPictureCommand}" 
         IsEnabled="{Binding HasUpdatedStudents}" 
         HorizontalOptions="Center" 
