@@ -93,7 +93,6 @@ namespace PicMe.App.ViewModels
                 await _storageService.DeleteStudentPictures();
 
                 await Toast.ToastShowter.ToastAlertAsync("Data is verwijderd!");
-
             }
         }
 

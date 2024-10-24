@@ -51,7 +51,7 @@
         <!-- Register COM CLSID -->
         <com:Extension Category="windows.comServer">
           <com:ComServer>
-            <com:ExeServer Executable="net8.0-windows10.0.19041.0\PicMe.App.exe" DisplayName="$targetnametoken$" Arguments="----AppNotificationActivated:">
+            <com:ExeServer Executable="PicMe.App.exe" DisplayName="$targetnametoken$" Arguments="----AppNotificationActivated:">
               <!-- Example path to executable: CommunityToolkit.Maui.Sample\CommunityToolkit.Maui.Sample.exe -->
               <com:Class Id="E59B395B-8823-48C1-AF4F-4A1BF7FAE99B" />
             </com:ExeServer>

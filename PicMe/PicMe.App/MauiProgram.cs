@@ -74,6 +74,7 @@ namespace PicMe.App
                 .UseSkiaSharp()
                 .UseMauiCommunityToolkit(options => {
                     options.SetShouldEnableSnackbarOnWindows(true);
+                    
                 })
                 .ConfigureFonts(fonts =>
                 {

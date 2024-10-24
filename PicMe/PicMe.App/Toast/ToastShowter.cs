@@ -7,10 +7,9 @@ namespace PicMe.App.Toast
     {
         public static async Task ToastAlertAsync(string message)
         {
-            //if windows
 
 //#if WINDOWS
-//           PicMe.App.Platforms.Windows.WinToaster.ToastAlertAsync(message);
+//           await PicMe.App.Platforms.Windows.WinToaster.ToastAlertAsync(message);
 //#else
             CancellationTokenSource cancellationTokenSource = new();
 

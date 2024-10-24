@@ -4,9 +4,9 @@
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="PicMe.App.Views.AboutPopup"
       >
-    <VerticalStackLayout Padding="20" Spacing="10" BackgroundColor="White"
+    <VerticalStackLayout Padding="10" Spacing="10" BackgroundColor="White"
                          VerticalOptions="Center" HorizontalOptions="Center"
-                         WidthRequest="300" HeightRequest="300">
+                         WidthRequest="500" HeightRequest="500">
 
         <Label Text="Over dit Project" 
                FontSize="Large" 
@@ -21,11 +21,11 @@
                FontSize="Small"
                HorizontalOptions="Center"/>
 
-        <Label Text="Voor vragen of ondersteuning: stan@devarens.be"
+        <Label Text="Voor vragen mail naar: stan@devarens.be"
                FontSize="Small"
                HorizontalOptions="Center"/>
 
-        <Image Source="logo.jpg" HorizontalOptions="Center" WidthRequest="100" HeightRequest="50"/>
+        <Image Source="logo.jpg" HorizontalOptions="Center" WidthRequest="150" HeightRequest="100"/>
 
         <Button Text="Sluiten" Clicked="Button_Clicked"  BackgroundColor="Green" TextColor="White" HorizontalOptions="Center"/>
         

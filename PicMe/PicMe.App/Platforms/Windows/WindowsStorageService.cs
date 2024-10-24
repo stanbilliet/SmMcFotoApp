@@ -103,15 +103,26 @@ namespace PicMe.App.Platforms.Windows
             try
             {
                 StorageFolder picturesFolder = KnownFolders.PicturesLibrary;
+                //check if folder exists
                 StorageFolder picMeFolder = await picturesFolder.CreateFolderAsync("PicMe", CreationCollisionOption.OpenIfExists);
 
-                var studentFolders = await picMeFolder.GetFoldersAsync();
-                foreach (var studentFolder in studentFolders)
-                {
-                    await studentFolder.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                if (picturesFolder != null) {
+
+                    var studentFolders = await picMeFolder.GetFoldersAsync();
+                    foreach (var studentFolder in studentFolders)
+                    {
+                        await studentFolder.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                    }
+
+                    return true;
+
                 }
 
+
                 return true;
+
+
+       
             }
             catch (Exception ex)
             {
