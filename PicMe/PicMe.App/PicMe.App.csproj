@@ -12,6 +12,7 @@
     
 		<ApplicationTitle>PicMe.App</ApplicationTitle>
 		<ApplicationId>com.DeVarens.picme.app</ApplicationId>
+    <ApplicationIdGuid>E59B395B-8823-48C1-AF4F-4A1BF7FAE99B</ApplicationIdGuid>
 		<ApplicationDisplayVersion>1.2</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
     

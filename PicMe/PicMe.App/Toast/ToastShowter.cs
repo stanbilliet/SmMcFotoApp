@@ -9,15 +9,15 @@ namespace PicMe.App.Toast
         {
             //if windows
 
-#if WINDOWS
-           PicMe.App.Platforms.Windows.WinToaster.ToastAlertAsync(message);
-#else
+//#if WINDOWS
+//           PicMe.App.Platforms.Windows.WinToaster.ToastAlertAsync(message);
+//#else
             CancellationTokenSource cancellationTokenSource = new();
 
             var toast = CommunityToolkit.Maui.Alerts.Toast.Make(message, ToastDuration.Short, 14);
             await toast.Show(cancellationTokenSource.Token);
 
-#endif
+//#endif
 
 
         }

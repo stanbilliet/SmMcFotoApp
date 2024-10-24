@@ -73,8 +73,8 @@ namespace PicMe.App
                 .UseMauiApp<App>()
                 .UseSkiaSharp()
                 .UseMauiCommunityToolkit(options => {
-  
-            })
+                    options.SetShouldEnableSnackbarOnWindows(true);
+                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
