@@ -20,16 +20,20 @@
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
 		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
 		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+		<AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<PackageVersion>1.2</PackageVersion>
-		<PackageCertificateThumbprint>535967C538FFBCAF5304AFA76137FC5CDE970B88</PackageCertificateThumbprint>
+		<PackageCertificateThumbprint>0F4952BC9BDCB07266C7C40C6D7CF929FE9F29C8</PackageCertificateThumbprint>
 		<AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 
   </PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<MauiIcon Include="Resources\AppIcon\picmeicon.png" Color="#ffffff" Resize="True" BaseSize="300,185" />
